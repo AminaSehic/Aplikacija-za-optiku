@@ -71,7 +71,7 @@ public class MainDAO {
             dajZaposlenikaUpit.setString(2, password);
             ResultSet rs = dajZaposlenikaUpit.executeQuery();
             try {
-                return new Employee(rs.getString("name"),
+                return new Employee(rs.getInt("id"), rs.getString("name"),
                         rs.getString("lastName"), rs.getString("birthDate"),
                         rs.getString("address"), rs.getString("contactNumber"),
                         rs.getInt("type"), rs.getString("password"),
@@ -93,7 +93,7 @@ public class MainDAO {
                 return null;
             }
             do{
-                Employee e = new Employee(rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
+                Employee e = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
                 zaposlenici.add(e);
             } while(rs.next());
             return zaposlenici;
@@ -111,7 +111,7 @@ public class MainDAO {
                 return null;
             }
             while (rs.next()) {
-                Employee e = new Employee(rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
+                Employee e = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
                 zaposlenici.add(e);
             }
             return zaposlenici;

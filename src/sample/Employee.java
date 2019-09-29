@@ -1,7 +1,6 @@
 package sample;
 
 public class Employee {
-    private static int brojac=10;
     private int id;
     private String name;
     private String lastName;
@@ -17,9 +16,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop) {
-        brojac++;
-        this.id=brojac;
+    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop) {
+        this.id=id;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
