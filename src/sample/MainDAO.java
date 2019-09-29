@@ -38,8 +38,8 @@ public class MainDAO {
             dajSveZaposlenikeUpit = conn.prepareStatement("select * from employee");
             dajZaposlenikeIzRadnjeUpit = conn.prepareStatement("select * from employee where shop_id=?");
             dajRadnjuUpit = conn.prepareStatement("select * from shop where id=?");
-            dajNaocaleIzRadnjeUpit = conn.prepareStatement("select * from glasses where shop_id=?");
-            prodajNaocaleUpit = conn.prepareStatement("update glasses set number=(number-1)");
+            dajNaocaleIzRadnjeUpit = conn.prepareStatement("select * from glasses where shop_id=? and number>0");
+            prodajNaocaleUpit = conn.prepareStatement("update glasses set number=(number-1) where id=?");
             dodajZaposlenikaUpit = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
             dodajRadnjuUpit = conn.prepareStatement("insert into shop values(?,?,?)");
             System.out.println("zdravo");

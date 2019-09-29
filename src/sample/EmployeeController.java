@@ -18,9 +18,10 @@ public class EmployeeController {
     private Employee e;
 
     public TableView<Glasses> tabelaNaocala;
-    public TableColumn colName;
+    public TableColumn colId;
     public TableColumn colModel;
     public TableColumn colManufacturer;
+    public TableColumn colNumber;
     public ObservableList<Glasses> listNaocala;
     public Button close;
     public Button prodajNaocale;
@@ -40,9 +41,10 @@ public class EmployeeController {
     public void initialize() {
 
         tabelaNaocala.setItems(listNaocala);
-        colName.setCellValueFactory(new PropertyValueFactory("id"));
+        colId.setCellValueFactory(new PropertyValueFactory("id"));
         colModel.setCellValueFactory(new PropertyValueFactory("model"));
         colManufacturer.setCellValueFactory(new PropertyValueFactory("manufacturer"));
+        colNumber.setCellValueFactory(new PropertyValueFactory("number"));
 
     }
 
@@ -56,6 +58,13 @@ public class EmployeeController {
     public void clickCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) close.getScene().getWindow();
         stage.close();
+    }
+    public void sellGlasses(ActionEvent actionEvent){
+        Glasses  g = tabelaNaocala.getSelectionModel().getSelectedItem();
+        dao.prodajNaocale(g.getId());
+        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
+        listNaocala=FXCollections.observableArrayList(glasses);
+        tabelaNaocala.setItems(listNaocala);
     }
 
 
