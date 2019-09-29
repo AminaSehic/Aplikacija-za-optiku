@@ -38,7 +38,7 @@ public class MainDAO {
             dajSveZaposlenikeUpit = conn.prepareStatement("select * from employee");
             dajZaposlenikeIzRadnjeUpit = conn.prepareStatement("select * from employee where shop_id=?");
             dajRadnjuUpit = conn.prepareStatement("select * from shop where id=?");
-            dajNaocaleIzRadnjeUpit = conn.prepareStatement("select * from glasses where shop_id=? and number>0");
+            dajNaocaleIzRadnjeUpit = conn.prepareStatement("select * from glasses where shop_id=?");
             prodajNaocaleUpit = conn.prepareStatement("update glasses set number=(number-1) where id=?");
             dodajZaposlenikaUpit = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
             dodajRadnjuUpit = conn.prepareStatement("insert into shop values(?,?,?)");
@@ -71,7 +71,7 @@ public class MainDAO {
             dajZaposlenikaUpit.setString(2, password);
             ResultSet rs = dajZaposlenikaUpit.executeQuery();
             try {
-                return new Employee(rs.getInt("id"), rs.getString("name"),
+                return new Employee(rs.getString("name"),
                         rs.getString("lastName"), rs.getString("birthDate"),
                         rs.getString("address"), rs.getString("contactNumber"),
                         rs.getInt("type"), rs.getString("password"),
@@ -92,10 +92,10 @@ public class MainDAO {
             if (!rs.next()) {
                 return null;
             }
-            while (rs.next()) {
-                Employee e = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
+            do{
+                Employee e = new Employee(rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
                 zaposlenici.add(e);
-            }
+            } while(rs.next());
             return zaposlenici;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class MainDAO {
                 return null;
             }
             while (rs.next()) {
-                Employee e = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
+                Employee e = new Employee(rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
                 zaposlenici.add(e);
             }
             return zaposlenici;

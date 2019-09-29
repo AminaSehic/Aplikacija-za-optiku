@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,11 +17,19 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class OwnerController {
     private MainDAO dao;
     public TableView tableEmployee;
-    public TableColumn colEmployees;
+    public TableColumn colId;
+    public TableColumn colName;
+    public TableColumn colLastName;
+    public TableColumn colBirthDate;
+    public TableColumn colAddress;
+    public TableColumn colContact;
+    public TableColumn colShopName;
+    public TableColumn colType;
     public Button addEmployee;
     public Button cancel;
     public  Button addShop;
@@ -32,12 +41,21 @@ public class OwnerController {
 
     OwnerController(MainDAO d) {
         dao = d;
+        ArrayList<Employee> zaposlenici = dao.dajSveZaposlenike();
+        listEmployees = FXCollections.observableArrayList(zaposlenici);
     }
 
     @FXML
     public void initialize() {
         tableEmployee.setItems(listEmployees);
-        colEmployees.setCellValueFactory(new PropertyValueFactory("radnici"));
+        colId.setCellValueFactory(new PropertyValueFactory("id"));
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colLastName.setCellValueFactory(new PropertyValueFactory("lastName"));
+        colBirthDate.setCellValueFactory(new PropertyValueFactory("birthDate"));
+        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colContact.setCellValueFactory(new PropertyValueFactory("contactNumber"));
+        colShopName.setCellValueFactory(new PropertyValueFactory("shopName"));
+        colType.setCellValueFactory(new PropertyValueFactory("typeName"));
     }
 
     public void onActionAddEmoployee(ActionEvent actionEvent) throws IOException {

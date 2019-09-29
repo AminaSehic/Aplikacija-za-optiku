@@ -1,6 +1,7 @@
 package sample;
 
 public class Employee {
+    private static int brojac=10;
     private int id;
     private String name;
     private String lastName;
@@ -16,8 +17,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop) {
-        this.id = id;
+    public Employee(String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop) {
+        brojac++;
+        this.id=brojac;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -28,6 +30,17 @@ public class Employee {
         this.shop = dao.dajRadnju(shop);
     }
 
+
+    public String getShopName(){
+        return this.shop.getShopName();
+    }
+    public String getTypeName(){
+        if (this.type==1){
+            return "Employee";
+        } else{
+            return "Owner";
+        }
+    }
 
     public String getPassword() {
         return password;

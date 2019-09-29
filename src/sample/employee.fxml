@@ -16,7 +16,6 @@
                 <TableColumn fx:id="colModel" maxWidth="3500.0" prefWidth="150.0" text="Model"/>
                 <TableColumn fx:id="colManufacturer" maxWidth="3500.0" prefWidth="150.0" text="Manufacturer"/>
                 <TableColumn fx:id="colNumber" maxWidth="3500.0" prefWidth="150.0" text="Number"/>
-
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

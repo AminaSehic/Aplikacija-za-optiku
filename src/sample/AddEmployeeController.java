@@ -17,7 +17,6 @@ public class AddEmployeeController {
 
 
     public void addEmployeeAction (ActionEvent actionEvent){
-        int id=Integer.parseInt(idField.getText());
         String name = nameField.getText();
         String lastName = lastNameField.getText();
         String date = dateField.getText();
@@ -26,8 +25,7 @@ public class AddEmployeeController {
         String password = passwordField.getText();
         int type = Integer.parseInt(typeField.getText());
         int shop = Integer.parseInt(shopIdField.getText());
-        System.out.println(id+" "+name+" "+lastName+" "+date+" "+address+" "+contact+" "+password+" "+type+" "+shop);
-        Employee e = new Employee(id, name, lastName, date, address, contact, type, password, shop);
+        Employee e = new Employee(name, lastName, date, address, contact, type, password, shop);
         dao.dodajZaposlenika(e);
         Stage stage = (Stage) idField.getScene().getWindow();
         stage.close();
