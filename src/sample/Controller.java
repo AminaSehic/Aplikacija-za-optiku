@@ -38,7 +38,7 @@ public class Controller {
            if (e.getType() == 1) {
                //otvori mu prozor za radnike
 
-               FXMLLoader loader = new FXMLLoader(getClass().getResource("employee.fxml"));
+               FXMLLoader loader = new FXMLLoader(getClass().getResource("/employee.fxml"));
                loader.setController(new EmployeeController(dao, e));
                Parent root1 = loader.load();
                Stage stage = new Stage();
@@ -53,7 +53,7 @@ public class Controller {
 
            } else if (e.getType() == 2) {
                //otvori prozor za vlasnika
-               FXMLLoader loader = new FXMLLoader(getClass().getResource("owner.fxml"));
+               FXMLLoader loader = new FXMLLoader(getClass().getResource("/owner.fxml"));
                loader.setController(new OwnerController(dao));
                Parent root1 = loader.load();
                Stage stage = new Stage();

@@ -42,7 +42,7 @@ public class MainDAO {
             prodajNaocaleUpit = conn.prepareStatement("update glasses set number=(number-1) where id=?");
             dodajZaposlenikaUpit = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
             dodajRadnjuUpit = conn.prepareStatement("insert into shop values(?,?,?)");
-            System.out.println("zdravo");
+            System.out.println("Postavljeni upiti");
         } catch (SQLException e) {
             e.printStackTrace();
         }

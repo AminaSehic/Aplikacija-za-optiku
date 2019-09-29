@@ -59,7 +59,7 @@ public class OwnerController {
     }
 
     public void onActionAddEmoployee(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addEmployee.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/addEmployee.fxml"));
         AddEmployeeController addEmployeeController = new AddEmployeeController(dao);
         loader.setController(addEmployeeController);
         Parent root1 = loader.load();
@@ -82,7 +82,7 @@ public class OwnerController {
     }
 
     public void onActionAddShop(ActionEvent actionEvent) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addShop.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/addShop.fxml"));
         AddShopController addShopController = new AddShopController(dao);
         loader.setController(addShopController);
         Parent root1 = loader.load();
