@@ -60,7 +60,8 @@ public class OwnerController {
 
     public void onActionAddEmoployee(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("addEmployee.fxml"));
-        loader.setController(new AddEmployeeController(dao));
+        AddEmployeeController addEmployeeController = new AddEmployeeController(dao);
+        loader.setController(addEmployeeController);
         Parent root1 = loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -70,8 +71,37 @@ public class OwnerController {
         stage.setScene(new Scene(root1));
         //prikazivanje scene
         stage.show();
+
+        stage.setOnHiding( event -> {
+            Employee e = addEmployeeController.getEmployee();
+            if (e != null) {
+                dao.dodajZaposlenika(e);
+                listEmployees.setAll(dao.dajSveZaposlenike());
+            }
+        } );
     }
 
+    public void onActionAddShop(ActionEvent actionEvent) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("addShop.fxml"));
+        AddShopController addShopController = new AddShopController(dao);
+        loader.setController(addShopController);
+        Parent root1 = loader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        //postavljanje parametara sceni
+        stage.setTitle("Add Shop");
+        stage.setScene(new Scene(root1));
+        //prikazivanje scene
+        stage.show();
+
+        stage.setOnHiding( event -> {
+            Shop radnja = addShopController.getShop();
+            if (radnja != null) {
+                dao.dodajRadnju(radnja);
+            }
+        } );
+    }
 
     public void clickCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) cancel.getScene().getWindow();

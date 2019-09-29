@@ -10,6 +10,7 @@ public class AddEmployeeController {
     public TextField idField, nameField, lastNameField, dateField, addressField;
     public TextField contactField, passwordField, typeField, shopIdField;
     public Button cancelButton, addEmployee;
+    private Employee employee;
 
     AddEmployeeController(MainDAO d){
         dao = d;
@@ -27,8 +28,9 @@ public class AddEmployeeController {
         int type = Integer.parseInt(typeField.getText());
         int shop = Integer.parseInt(shopIdField.getText());
         System.out.println(id+" "+name+" "+lastName+" "+date+" "+address+" "+contact+" "+password+" "+type+" "+shop);
-        Employee e = new Employee(id, name, lastName, date, address, contact, type, password, shop);
-        dao.dodajZaposlenika(e);
+        employee =  new Employee(id, name, lastName, date, address, contact, type, password, shop);
+
+
         Stage stage = (Stage) idField.getScene().getWindow();
         stage.close();
     }
@@ -37,4 +39,7 @@ public class AddEmployeeController {
         stage.close();
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
 }
