@@ -13,7 +13,7 @@ public class AddShopController {
 
 
     AddShopController(MainDAO d) {
-        d = dao;
+        dao=d;
     }
     public void addShopAction (ActionEvent actionEvent){
 
@@ -21,7 +21,6 @@ public class AddShopController {
         String name = fieldShopName.getText();
         String address = fieldAddress.getText();
         shop = new Shop(id, name, address);
-        dao.dodajRadnju(shop);
         Stage stage = (Stage) fieldID.getScene().getWindow();
         stage.close();
     }

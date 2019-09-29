@@ -176,7 +176,6 @@ public class MainDAO {
             dodajZaposlenikaUpit.setString(7, e.getPassword());
             dodajZaposlenikaUpit.setInt(8, e.getShop().getId());
             dodajZaposlenikaUpit.setInt(9, e.getType());
-            System.out.println("Uspjesno dodan radnik");
             dodajZaposlenikaUpit.execute();
             System.out.println("Uspjesno dodan radnik");
         } catch (SQLException ex) {
@@ -188,7 +187,7 @@ public class MainDAO {
             dodajRadnjuUpit.setInt(1, s.getId());
             dodajRadnjuUpit.setString(2, s.getShopName());
             dodajRadnjuUpit.setString(3, s.getAddress());
-
+            dodajRadnjuUpit.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
