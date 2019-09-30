@@ -53,6 +53,7 @@ public class EmployeeController {
         Glasses glasses = tabelaNaocala.getSelectionModel().getSelectedItem();
         if (glasses == null) return;
         dao.prodajNaocale(glasses.getId());
+
     }
 
     public void clickCancel(ActionEvent actionEvent) {

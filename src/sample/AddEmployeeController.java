@@ -21,6 +21,7 @@ public class AddEmployeeController {
     }
 
     public void addEmployeeAction(ActionEvent actionEvent) {
+
         int id = Integer.parseInt(idField.getText());
         String name = nameField.getText();
         String lastName = lastNameField.getText();
@@ -32,8 +33,6 @@ public class AddEmployeeController {
         int shop = Integer.parseInt(shopIdField.getText());
         System.out.println(id + " " + name + " " + lastName + " " + date + " " + address + " " + contact + " " + password + " " + type + " " + shop);
         employee = new Employee(id, name, lastName, date, address, contact, type, password, shop);
-
-
         Stage stage = (Stage) idField.getScene().getWindow();
         stage.close();
     }
