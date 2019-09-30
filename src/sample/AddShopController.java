@@ -19,6 +19,11 @@ public class AddShopController {
     public Shop getShop() {
         return shop;
     }
+    public void clickCancel(ActionEvent actionEvent) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
+
     public void addShopAction(ActionEvent actionEvent) {
 
         int id = Integer.parseInt(fieldID.getText());
@@ -28,11 +33,4 @@ public class AddShopController {
         Stage stage = (Stage) fieldID.getScene().getWindow();
         stage.close();
     }
-
-    public void clickCancel(ActionEvent actionEvent) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
-    }
-
-
 }

@@ -42,7 +42,7 @@ public class Shop {
         this.shopName = shopName;
     }
 
-     public Map<Shop, ArrayList<Employee>> getMap() {
+    public Map<Shop, ArrayList<Employee>> getMap() {
         return map;
     }
 
