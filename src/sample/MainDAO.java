@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class MainDAO {
     private static MainDAO instance;
     private Connection conn;
-    private PreparedStatement dodajRadnjuUpit,  dajZaposlenikaUpit, dajSveZaposlenikeUpit,
+    private PreparedStatement dodajRadnjuUpit, dajZaposlenikaUpit, dajSveZaposlenikeUpit,
             dajZaposlenikeIzRadnjeUpit, dajRadnjuUpit, dajNaocaleIzRadnjeUpit, prodajNaocaleUpit, dodajZaposlenikaUpit;
 
     public static MainDAO getInstance() {
@@ -92,10 +92,10 @@ public class MainDAO {
             if (!rs.next()) {
                 return null;
             }
-            do{
+            do {
                 Employee e = new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("lastName"), rs.getString("birthDate"), rs.getString("address"), rs.getString("contactNumber"), rs.getInt("type"), rs.getString("password"), rs.getInt("shop_id"));
                 zaposlenici.add(e);
-            } while(rs.next());
+            } while (rs.next());
             return zaposlenici;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,9 +126,9 @@ public class MainDAO {
             System.out.println("id poslan " + id);
             dajRadnjuUpit.setInt(1, id);
             ResultSet rs = dajRadnjuUpit.executeQuery();
-            if(!rs.next()) return null;
-            Shop s = new Shop(rs.getInt("id"),rs.getString("shopName"), rs.getString("address"));
-            System.out.println(s.getId() + " " + s.getShopName() +" " + s.getAddress());
+            if (!rs.next()) return null;
+            Shop s = new Shop(rs.getInt("id"), rs.getString("shopName"), rs.getString("address"));
+            System.out.println(s.getId() + " " + s.getShopName() + " " + s.getAddress());
             return s;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,7 +142,7 @@ public class MainDAO {
             dajNaocaleIzRadnjeUpit.setInt(1, id_radnje);
             ResultSet rs = dajNaocaleIzRadnjeUpit.executeQuery();
             while (rs.next()) {
-                Glasses g = new Glasses(rs.getInt("id"),rs.getString("manufacturer"),
+                Glasses g = new Glasses(rs.getInt("id"), rs.getString("manufacturer"),
                         rs.getString("model"), rs.getInt("yearOfProduction"),
                         rs.getInt("type"), rs.getInt("price"), rs.getInt("shop_id"),
                         rs.getInt("number"));
@@ -184,8 +184,8 @@ public class MainDAO {
         }
     }
 
-    public void dodajRadnju(Shop s){
-        try{
+    public void dodajRadnju(Shop s) {
+        try {
             dodajRadnjuUpit.setInt(1, s.getId());
             dodajRadnjuUpit.setString(2, s.getShopName());
             dodajRadnjuUpit.setString(3, s.getAddress());

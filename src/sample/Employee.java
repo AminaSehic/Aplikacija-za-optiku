@@ -17,7 +17,7 @@ public class Employee {
     }
 
     public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop) {
-        this.id=id;
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -29,13 +29,14 @@ public class Employee {
     }
 
 
-    public String getShopName(){
+    public String getShopName() {
         return this.shop.getShopName();
     }
-    public String getTypeName(){
-        if (this.type==1){
+
+    public String getTypeName() {
+        if (this.type == 1) {
             return "Employee";
-        } else{
+        } else {
             return "Owner";
         }
     }
@@ -79,6 +80,7 @@ public class Employee {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getAddress() {
         return address;
     }
@@ -114,7 +116,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee" + "name='" + name  +", lastName='" + lastName + '\'' +", birthDate=" + birthDate +
+        return "Employee" + "name='" + name + ", lastName='" + lastName + '\'' + ", birthDate=" + birthDate +
                 ", address='" + address + ", contactNumber='" + contactNumber;
     }
 

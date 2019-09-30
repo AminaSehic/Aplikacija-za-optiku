@@ -32,7 +32,7 @@ public class OwnerController {
     public TableColumn colType;
     public Button addEmployee;
     public Button cancel;
-    public  Button addShop;
+    public Button addShop;
     public VBox vBox;
     private ObservableList<Employee> listEmployees;
 
@@ -72,16 +72,16 @@ public class OwnerController {
         //prikazivanje scene
         stage.show();
 
-        stage.setOnHiding( event -> {
+        stage.setOnHiding(event -> {
             Employee e = addEmployeeController.getEmployee();
             if (e != null) {
                 dao.dodajZaposlenika(e);
                 listEmployees.setAll(dao.dajSveZaposlenike());
             }
-        } );
+        });
     }
 
-    public void onActionAddShop(ActionEvent actionEvent) throws IOException{
+    public void onActionAddShop(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/addShop.fxml"));
         AddShopController addShopController = new AddShopController(dao);
         loader.setController(addShopController);
@@ -95,12 +95,12 @@ public class OwnerController {
         //prikazivanje scene
         stage.show();
 
-        stage.setOnHiding( event -> {
+        stage.setOnHiding(event -> {
             Shop radnja = addShopController.getShop();
             if (radnja != null) {
                 dao.dodajRadnju(radnja);
             }
-        } );
+        });
     }
 
     public void clickCancel(ActionEvent actionEvent) {

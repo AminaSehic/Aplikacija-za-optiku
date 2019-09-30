@@ -42,7 +42,6 @@ public class Shop {
         this.address = address;
     }
 
-
     public Map<Shop, ArrayList<Employee>> getMap() {
         return map;
     }
@@ -53,6 +52,6 @@ public class Shop {
 
     @Override
     public String toString() {
-        return "Shop " + "shopName='" + shopName + ", address='" + address ;
+        return "Shop " + "shopName='" + shopName + ", address='" + address;
     }
 }

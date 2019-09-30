@@ -6,16 +6,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class AddShopController {
-    public TextField fieldID, fieldShopName,fieldAddress;
+    public TextField fieldID, fieldShopName, fieldAddress;
     private MainDAO dao;
     public Button addShopButton, cancelButton;
     private Shop shop;
 
 
     AddShopController(MainDAO d) {
-        dao=d;
+        dao = d;
     }
-    public void addShopAction (ActionEvent actionEvent){
+
+    public void addShopAction(ActionEvent actionEvent) {
 
         int id = Integer.parseInt(fieldID.getText());
         String name = fieldShopName.getText();
@@ -29,7 +30,8 @@ public class AddShopController {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
-    public Shop getShop(){
+
+    public Shop getShop() {
         return shop;
     }
 }

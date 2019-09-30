@@ -34,7 +34,7 @@ public class EmployeeController {
         System.out.println(e);
         ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
         System.out.println(glasses);
-        listNaocala=FXCollections.observableArrayList(glasses);
+        listNaocala = FXCollections.observableArrayList(glasses);
     }
 
     @FXML
@@ -59,11 +59,12 @@ public class EmployeeController {
         Stage stage = (Stage) close.getScene().getWindow();
         stage.close();
     }
-    public void sellGlasses(ActionEvent actionEvent){
-        Glasses  g = tabelaNaocala.getSelectionModel().getSelectedItem();
+
+    public void sellGlasses(ActionEvent actionEvent) {
+        Glasses g = tabelaNaocala.getSelectionModel().getSelectedItem();
         dao.prodajNaocale(g.getId());
         ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
-        listNaocala=FXCollections.observableArrayList(glasses);
+        listNaocala = FXCollections.observableArrayList(glasses);
         tabelaNaocala.setItems(listNaocala);
     }
 

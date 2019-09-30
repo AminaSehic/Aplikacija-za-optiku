@@ -12,13 +12,16 @@ public class AddEmployeeController {
     public Button cancelButton, addEmployee;
     private Employee employee;
 
-    AddEmployeeController(MainDAO d){
+    AddEmployeeController(MainDAO d) {
         dao = d;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
 
-    public void addEmployeeAction (ActionEvent actionEvent){
-        int id=Integer.parseInt(idField.getText());
+    public void addEmployeeAction(ActionEvent actionEvent) {
+        int id = Integer.parseInt(idField.getText());
         String name = nameField.getText();
         String lastName = lastNameField.getText();
         String date = dateField.getText();
@@ -27,19 +30,18 @@ public class AddEmployeeController {
         String password = passwordField.getText();
         int type = Integer.parseInt(typeField.getText());
         int shop = Integer.parseInt(shopIdField.getText());
-        System.out.println(id+" "+name+" "+lastName+" "+date+" "+address+" "+contact+" "+password+" "+type+" "+shop);
-        employee =  new Employee(id, name, lastName, date, address, contact, type, password, shop);
+        System.out.println(id + " " + name + " " + lastName + " " + date + " " + address + " " + contact + " " + password + " " + type + " " + shop);
+        employee = new Employee(id, name, lastName, date, address, contact, type, password, shop);
 
 
         Stage stage = (Stage) idField.getScene().getWindow();
         stage.close();
     }
+
     public void clickCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
+
 }

@@ -30,7 +30,7 @@ public class Glasses {
     }
 
     public Glasses(int id, String manufacturer, String model, int yearOfProduction, int type, int prise, int shop, int number) {
-        this.id=id;
+        this.id = id;
         this.manufacturer = manufacturer;
         this.model = model;
         this.yearOfProduction = yearOfProduction;
@@ -94,7 +94,7 @@ public class Glasses {
     @Override
     public String toString() {
         return "Glasses{" + "manufacturer='" + manufacturer +
-                ", model='" + model + ", yearOfProduction=" + yearOfProduction +  ", type=" + type + ", prise=" + prise +
+                ", model='" + model + ", yearOfProduction=" + yearOfProduction + ", type=" + type + ", prise=" + prise +
                 ", shop=" + shop + ", number=" + number;
     }
 }
