@@ -7,7 +7,7 @@ public class Glasses {
     private String manufacturer;
     private String model;
     private int yearOfProduction;
-    private int type; //tip 1 su dioptrijske, tip 2 su suncane
+    private int type;
     private int prise;
     private Shop shop;
     private int number;
@@ -93,7 +93,7 @@ public class Glasses {
 
     @Override
     public String toString() {
-        return "Glasses{" + "manufacturer='" + manufacturer +
+        return "Glasses" + "manufacturer='" + manufacturer +
                 ", model='" + model + ", yearOfProduction=" + yearOfProduction + ", type=" + type + ", prise=" + prise +
                 ", shop=" + shop + ", number=" + number;
     }

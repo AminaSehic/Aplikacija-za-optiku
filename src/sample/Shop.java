@@ -9,13 +9,13 @@ public class Shop {
     public String address;
     public Map<Shop, ArrayList<Employee>> map;
 
+    public Shop() {
+    }
+
     public Shop(int id, String shopName, String address) {
         this.id = id;
         this.shopName = shopName;
         this.address = address;
-    }
-
-    public Shop() {
     }
 
     public int getId() {

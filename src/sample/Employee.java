@@ -116,7 +116,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee" + "name='" + name + ", lastName='" + lastName + '\'' + ", birthDate=" + birthDate +
+        return "Employee" + "name='" + name + ", lastName='" + lastName + ", birthDate=" + birthDate +
                 ", address='" + address + ", contactNumber='" + contactNumber;
     }
 

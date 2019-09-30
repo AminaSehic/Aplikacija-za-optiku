@@ -36,9 +36,6 @@ public class OwnerController {
     public VBox vBox;
     private ObservableList<Employee> listEmployees;
 
-    /*Prije svega administrator kada pristupa sistemu treba
-    moci unijeti radnike i izdati im pristupnu sifru za sistem*/
-
     OwnerController(MainDAO d) {
         dao = d;
         ArrayList<Employee> zaposlenici = dao.dajSveZaposlenike();

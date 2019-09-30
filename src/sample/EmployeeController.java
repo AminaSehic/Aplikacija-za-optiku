@@ -68,16 +68,4 @@ public class EmployeeController {
         tabelaNaocala.setItems(listNaocala);
     }
 
-
-
-
-    /*
- Kada radnik pristupi sistemu, treba da mu se prikaze
- katalog postojecih proizvoda u njegovoj radnji.
-
-  Pri prikazu kataloga, treba biti moguce pretrazivati
-  naocale prema zeljama kupca, a to je vecinom pretraga
-   po modelu, proizvodjacu,
-  cijeni (od-do). Treba moci vrsiti prodaju naocala.*/
-
 }
