@@ -26,14 +26,6 @@ public class Shop {
         this.id = id;
     }
 
-    public String getShopName() {
-        return shopName;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -42,7 +34,15 @@ public class Shop {
         this.address = address;
     }
 
-    public Map<Shop, ArrayList<Employee>> getMap() {
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+     public Map<Shop, ArrayList<Employee>> getMap() {
         return map;
     }
 
