@@ -16,6 +16,9 @@ public class AddShopController {
         dao = d;
     }
 
+    public Shop getShop() {
+        return shop;
+    }
     public void addShopAction(ActionEvent actionEvent) {
 
         int id = Integer.parseInt(fieldID.getText());
@@ -31,7 +34,5 @@ public class AddShopController {
         stage.close();
     }
 
-    public Shop getShop() {
-        return shop;
-    }
+
 }
