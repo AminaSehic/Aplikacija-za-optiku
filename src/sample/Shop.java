@@ -18,6 +18,14 @@ public class Shop {
     public Shop() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getShopName() {
         return shopName;
     }
@@ -34,13 +42,6 @@ public class Shop {
         this.address = address;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Map<Shop, ArrayList<Employee>> getMap() {
         return map;
@@ -48,5 +49,10 @@ public class Shop {
 
     public void setMap(Map<Shop, ArrayList<Employee>> map) {
         this.map = map;
+    }
+
+    @Override
+    public String toString() {
+        return "Shop " + "shopName='" + shopName + ", address='" + address ;
     }
 }

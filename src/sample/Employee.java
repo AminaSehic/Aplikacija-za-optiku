@@ -79,6 +79,14 @@ public class Employee {
     public void setId(int id) {
         this.id = id;
     }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 
     public String getBirthDate() {
         return birthDate;
@@ -86,14 +94,6 @@ public class Employee {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getContactNumber() {
@@ -114,13 +114,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", address='" + address + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
-                '}';
+        return "Employee" + "name='" + name  +", lastName='" + lastName + '\'' +", birthDate=" + birthDate +
+                ", address='" + address + ", contactNumber='" + contactNumber;
     }
 
 }
