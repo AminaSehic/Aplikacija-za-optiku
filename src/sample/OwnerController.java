@@ -78,6 +78,10 @@ public class OwnerController {
         });
     }
 
+    public void clickCancel(ActionEvent actionEvent) {
+        Stage stage = (Stage) cancel.getScene().getWindow();
+        stage.close();
+    }
     public void onActionAddShop(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/addShop.fxml"));
         AddShopController addShopController = new AddShopController(dao);
@@ -100,8 +104,5 @@ public class OwnerController {
         });
     }
 
-    public void clickCancel(ActionEvent actionEvent) {
-        Stage stage = (Stage) cancel.getScene().getWindow();
-        stage.close();
-    }
+
 }
