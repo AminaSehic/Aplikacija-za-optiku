@@ -90,4 +90,11 @@ public class Glasses {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    @Override
+    public String toString() {
+        return "Glasses{" + "manufacturer='" + manufacturer +
+                ", model='" + model + ", yearOfProduction=" + yearOfProduction +  ", type=" + type + ", prise=" + prise +
+                ", shop=" + shop + ", number=" + number;
+    }
 }

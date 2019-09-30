@@ -70,7 +70,6 @@ public class Controller {
                System.exit(1);
            }
        } catch(Exception e){
-           System.out.println("nesto se obatalilo");
            e.printStackTrace();
        }
 

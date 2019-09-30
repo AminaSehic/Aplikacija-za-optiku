@@ -155,14 +155,6 @@ public class MainDAO {
         return null;
     }
 
-    public void prodajNaocale(int id) {
-        try {
-            prodajNaocaleUpit.setInt(1, id);
-            prodajNaocaleUpit.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void dodajZaposlenika(Employee e) {
         try {
@@ -182,6 +174,16 @@ public class MainDAO {
             ex.printStackTrace();
         }
     }
+
+    public void prodajNaocale(int id) {
+        try {
+            prodajNaocaleUpit.setInt(1, id);
+            prodajNaocaleUpit.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void dodajRadnju(Shop s){
         try{
             dodajRadnjuUpit.setInt(1, s.getId());
