@@ -50,19 +50,6 @@ public class MainDAO {
 
     }
 
-    public static void removeInstance() {
-        if (instance == null) return;
-        instance.close();
-        instance = null;
-    }
-
-    public void close() {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Employee dajZaposlenika(String name, String password) {
         Employee korisnik = new Employee();
@@ -217,6 +204,20 @@ public class MainDAO {
             e.printStackTrace();
         }
     }
+    public static void removeInstance() {
+        if (instance == null) return;
+        instance.close();
+        instance = null;
+    }
+
+    public void close() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
