@@ -1,6 +1,6 @@
 package ba.unsa.etf.rpr.projekat;
 
-import ba.unsa.etf.rpr.projekat.Controllers.AddEmployeeController.Vrsta;
+
 import ba.unsa.etf.rpr.projekat.Exceptions.InvalidEmployeeTypeException;
 import ba.unsa.etf.rpr.projekat.Models.Employee;
 import ba.unsa.etf.rpr.projekat.Models.Glasses;
@@ -17,6 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class OptikaDAO {
+    private static int idEmployee=100, idShop=100, idGlasses=100;
     private static OptikaDAO instance;
     private Connection conn = null;
     private PreparedStatement dodajRadnjuUpit, dajZaposlenikaUpit, dajSveZaposlenikeUpit,
@@ -85,13 +86,13 @@ public class OptikaDAO {
         return employee;
     }
 
-    private Vrsta parseEmployeeType(String v) throws InvalidEmployeeTypeException {
-        if (Vrsta.ADMIN.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.ADMIN;
-        } else if (Vrsta.VLASNIK.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.VLASNIK;
-        } else if (Vrsta.UPOSLENIK.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.UPOSLENIK;
+    private Employee.Type parseEmployeeType(String v) throws InvalidEmployeeTypeException {
+        if (Employee.Type.ADMIN.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.ADMIN;
+        } else if (Employee.Type.OWNER.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.OWNER;
+        } else if (Employee.Type.EMPLOYEE.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.EMPLOYEE;
         } else {
             throw new InvalidEmployeeTypeException("Nepostojeci tip zaposlenika");
         }
@@ -136,14 +137,14 @@ public class OptikaDAO {
             }
             while (rs.next()) {
                 Employee e = new Employee(rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("last_name"),
-                                rs.getString("birth_date"),
-                                rs.getString("address"),
-                                rs.getString("phone_number"),
-                                parseEmployeeType(rs.getString("type")),
-                                rs.getString("password_hash"),
-                                dajRadnju(rs.getInt("shop_id")));
+                        rs.getString("name"),
+                        rs.getString("last_name"),
+                        rs.getString("birth_date"),
+                        rs.getString("address"),
+                        rs.getString("phone_number"),
+                        parseEmployeeType(rs.getString("type")),
+                        rs.getString("password_hash"),
+                        dajRadnju(rs.getInt("shop_id")));
                 zaposlenici.add(e);
             }
 
@@ -175,8 +176,9 @@ public class OptikaDAO {
     public ArrayList<Glasses> dajNaocaleIzRadnje(int id_radnje) {
         ArrayList<Glasses> naocale = new ArrayList<>();
         try {
-            dajNaocaleIzRadnjeUpit.setInt(1, id_radnje);
-            ResultSet rs = dajNaocaleIzRadnjeUpit.executeQuery();
+            start("select * from glasses where shop_id=?");
+            statement.setInt(1, id_radnje);
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Glasses g = new Glasses(rs.getInt("id"), rs.getString("manufacturer"),
                         rs.getString("model"), rs.getInt("yearOfProduction"),
@@ -192,7 +194,6 @@ public class OptikaDAO {
         close();
         return naocale;
     }
-
 
     public void dodajZaposlenika(Employee e) {
         try {
@@ -228,15 +229,26 @@ public class OptikaDAO {
 
     public void dodajRadnju(Shop s) {
         try {
-            dodajRadnjuUpit.setInt(1, s.getId());
-            dodajRadnjuUpit.setString(2, s.getShopName());
-            dodajRadnjuUpit.setString(3, s.getAddress());
-            dodajRadnjuUpit.execute();
+            start("insert into shop values(?,?,?)");
+            statement.setInt(1, s.getId());
+            statement.setString(2, s.getShopName());
+            statement.setString(3, s.getAddress());
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
             close();
         }
         close();
+    }
+    public void deleteEmployee(Employee employee){
+        try{
+            start("DELETE from Employee where id=?");
+            statement.setInt(1, employee.getId());
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
     }
 
     private static byte[] getSHA(String input) throws NoSuchAlgorithmException {
@@ -249,7 +261,7 @@ public class OptikaDAO {
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static String dajPasswordHash(String password) throws NoSuchAlgorithmException {
+    public static String dajPasswordHash(String password) throws NoSuchAlgorithmException {
         byte[] hash = getSHA(password);
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
@@ -296,6 +308,15 @@ public class OptikaDAO {
         instance = null;
     }
 
+    private int getNewEmployeeId(){
+        return idEmployee++;
+    }
+    private int getNewShopId(){
+        return idShop++;
+    }
+    private int getNewGlassesId(){
+        return idGlasses++;
+    }
     public void close() {
         try {
             conn.close();

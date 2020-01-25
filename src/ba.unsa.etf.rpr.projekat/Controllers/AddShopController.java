@@ -29,11 +29,10 @@ public class AddShopController {
 
     public void addShopAction(ActionEvent actionEvent) {
 
-        int id = Integer.parseInt(fieldID.getText());
         String name = fieldShopName.getText();
         String address = fieldAddress.getText();
-        shop = new Shop(id, name, address);
-        Stage stage = (Stage) fieldID.getScene().getWindow();
+        shop = new Shop(name, address);
+        Stage stage = (Stage) fieldShopName.getScene().getWindow();
         stage.close();
     }
 

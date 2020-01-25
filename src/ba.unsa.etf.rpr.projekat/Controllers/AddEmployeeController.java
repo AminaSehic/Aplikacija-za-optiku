@@ -9,15 +9,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.security.NoSuchAlgorithmException;
+
+import static ba.unsa.etf.rpr.projekat.OptikaDAO.dajPasswordHash;
+
 public class AddEmployeeController {
     private OptikaDAO dao;
     public TextField idField, nameField, lastNameField, dateField, addressField;
     public TextField contactField, passwordField, typeField, shopIdField;
     public Button cancelButton, addEmployee;
 
-    public enum Vrsta {ADMIN, VLASNIK, UPOSLENIK}
 
-    ;
+
     private Employee employee;
 
     public AddEmployeeController(OptikaDAO dao) {
@@ -30,21 +33,21 @@ public class AddEmployeeController {
 
     public void addEmployeeAction(ActionEvent actionEvent) {
         try {
-            int id = Integer.parseInt(idField.getText());
             String name = nameField.getText();
             String lastName = lastNameField.getText();
             String date = dateField.getText();
             String address = addressField.getText();
             String contact = contactField.getText();
             String password = passwordField.getText();
-            Vrsta type = null;
+            String password_hash=dajPasswordHash(password);
+            Employee.Type type = null;
             type = odrediVrstu(typeField.getText());
             int shop = Integer.parseInt(shopIdField.getText());
             Shop s = dao.dajRadnju(shop);
-            employee = new Employee(id, name, lastName, date, address, contact, type, password, s);
-            Stage stage = (Stage) idField.getScene().getWindow();
+            employee = new Employee(name, lastName, date, address, contact, password_hash, type, s);
+            Stage stage = (Stage) nameField.getScene().getWindow();
             stage.close();
-        } catch (InvalidEmployeeTypeException e) {
+        } catch (InvalidEmployeeTypeException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
@@ -55,13 +58,13 @@ public class AddEmployeeController {
         stage.close();
     }
 
-    private Vrsta odrediVrstu(String v) throws InvalidEmployeeTypeException {
-        if (Vrsta.ADMIN.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.ADMIN;
-        } else if (Vrsta.VLASNIK.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.VLASNIK;
-        } else if (Vrsta.UPOSLENIK.toString().toLowerCase().equals(v.toLowerCase())) {
-            return Vrsta.UPOSLENIK;
+    private Employee.Type odrediVrstu(String v) throws InvalidEmployeeTypeException {
+        if (Employee.Type.ADMIN.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.ADMIN;
+        } else if (Employee.Type.OWNER.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.OWNER;
+        } else if (Employee.Type.EMPLOYEE.toString().toLowerCase().equals(v.toLowerCase())) {
+            return Employee.Type.EMPLOYEE;
         } else {
             throw new InvalidEmployeeTypeException("Nepostojeci tip zaposlenika");
         }

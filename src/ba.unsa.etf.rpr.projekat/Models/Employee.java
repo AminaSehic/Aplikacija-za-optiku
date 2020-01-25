@@ -1,9 +1,5 @@
 package ba.unsa.etf.rpr.projekat.Models;
 
-import ba.unsa.etf.rpr.projekat.Controllers.AddEmployeeController.Vrsta;
-import ba.unsa.etf.rpr.projekat.Exceptions.InvalidEmployeeTypeException;
-import ba.unsa.etf.rpr.projekat.OptikaDAO;
-
 
 public class Employee {
     private int id;
@@ -13,13 +9,27 @@ public class Employee {
     private String address;
     private String contactNumber;
     private String password_hash;
-    private Vrsta type;
+
+    public enum Type {ADMIN, OWNER, EMPLOYEE}
+
+    private Type type;
     private Shop shop;
 
-    public Employee(){
+    public Employee() {
     }
 
-    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, Vrsta type, String password_hash, Shop shop){
+    public Employee(String name, String lastName, String birthDate, String address, String contactNumber, String password_hash, Type type, Shop shop) {
+        this.name = name;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.contactNumber = contactNumber;
+        this.password_hash = password_hash;
+        this.type = type;
+        this.shop = shop;
+    }
+
+    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, Type type, String password_hash, Shop shop) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -37,11 +47,11 @@ public class Employee {
     }
 
     public String getTypeName() {
-        if (this.type == Vrsta.ADMIN) {
+        if (this.type == Type.ADMIN) {
             return "Admin";
-        } else if(this.type == Vrsta.UPOSLENIK) {
+        } else if (this.type == Type.EMPLOYEE) {
             return "Employee";
-        } else{
+        } else {
             return "Owner";
         }
     }
@@ -111,11 +121,11 @@ public class Employee {
         this.contactNumber = contactNumber;
     }
 
-    public Vrsta getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Vrsta tip) {
+    public void setType(Type tip) {
         type = tip;
     }
 

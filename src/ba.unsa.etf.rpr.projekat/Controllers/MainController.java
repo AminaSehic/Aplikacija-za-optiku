@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import ba.unsa.etf.rpr.projekat.Controllers.AddEmployeeController.Vrsta;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -29,26 +29,28 @@ public class MainController {
         String name = nameField.getText();
         String password = passwordField.getText();
         Employee e = dao.dajZaposlenika(name, password);
-        if (e.getType() == AddEmployeeController.Vrsta.VLASNIK ||e.getType() == Vrsta.ADMIN) {
+        if (e.getType() == Employee.Type.OWNER ||e.getType() == Employee.Type.ADMIN) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminView.fxml"));
             loader.setController(new AdminController(dao));
             Parent root1 = loader.load();
-            Stage myStage = new Stage();
-            myStage.initStyle(StageStyle.DECORATED);
-            myStage.setTitle("Admin dashboard");
-            myStage.setScene(new Scene(root1, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            myStage.show();
-            myStage.setResizable(false);
-        } else if (e.getType() == Vrsta.UPOSLENIK) {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Admin dashboard");
+            stage.setScene(new Scene(root1, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.show();
+            stage.setResizable(false);
+        } else if (e.getType() == Employee.Type.EMPLOYEE) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/employeeView.fxml"));
             loader.setController(new EmployeeController(dao, e));
             Parent root1 = loader.load();
-            Stage myStage = new Stage();
-            myStage.initStyle(StageStyle.DECORATED);
-            myStage.setTitle("Employee view");
-            myStage.setScene(new Scene(root1, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            myStage.show();
-            myStage.setResizable(false);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Employee view");
+            stage.setScene(new Scene(root1, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.show();
+            stage.setResizable(false);
         }
     }
 }

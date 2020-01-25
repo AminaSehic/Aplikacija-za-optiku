@@ -20,21 +20,22 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminController {
     private OptikaDAO dao;
     public TableView<Employee> tableEmployee;
-    public TableColumn colId;
-    public TableColumn colName;
-    public TableColumn colLastName;
-    public TableColumn colBirthDate;
-    public TableColumn colAddress;
-    public TableColumn colContact;
-    public TableColumn colShopName;
-    public TableColumn colType;
+    public TableColumn colEmployeeId;
+    public TableColumn colEmployeeName;
+    public TableColumn colEmployeeLastName;
+    public TableColumn colEmployeeBirthDate;
+    public TableColumn colEmployeeAddress;
+    public TableColumn colEmployeeContact;
+    public TableColumn colEmployeeShopName;
+    public TableColumn colEmployeeType;
     public Button addEmployee;
-    public Button cancel;
+    public Button cancelEmployee, cancelShop;
     public Button addShop;
     public VBox vBox;
     private ObservableList<Employee> listEmployees;
@@ -48,23 +49,25 @@ public class AdminController {
     @FXML
     public void initialize() {
         tableEmployee.setItems(listEmployees);
-        colId.setCellValueFactory(new PropertyValueFactory("id"));
-        colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colLastName.setCellValueFactory(new PropertyValueFactory("lastName"));
-        colBirthDate.setCellValueFactory(new PropertyValueFactory("birthDate"));
-        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
-        colContact.setCellValueFactory(new PropertyValueFactory("contactNumber"));
-        colShopName.setCellValueFactory(new PropertyValueFactory("shopName"));
-        colType.setCellValueFactory(new PropertyValueFactory("typeName"));
+        colEmployeeId.setCellValueFactory(new PropertyValueFactory("id"));
+        colEmployeeName.setCellValueFactory(new PropertyValueFactory("name"));
+        colEmployeeLastName.setCellValueFactory(new PropertyValueFactory("lastName"));
+        colEmployeeBirthDate.setCellValueFactory(new PropertyValueFactory("birthDate"));
+        colEmployeeAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colEmployeeContact.setCellValueFactory(new PropertyValueFactory("contactNumber"));
+        colEmployeeShopName.setCellValueFactory(new PropertyValueFactory("shopName"));
+        colEmployeeType.setCellValueFactory(new PropertyValueFactory("typeName"));
     }
 
-    public void onActionAddEmoployee(ActionEvent actionEvent) throws IOException {
+    public void onActionAddEmployee(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addEmployeeView.fxml"));
         AddEmployeeController addEmployeeController = new AddEmployeeController(dao);
         loader.setController(addEmployeeController);
         Parent root1 = loader.load();
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
         stage.setTitle("Employee");
         stage.setScene(new Scene(root1));
         stage.show();
@@ -78,8 +81,21 @@ public class AdminController {
         });
     }
 
-    public void clickCancel(ActionEvent actionEvent) {
-        Stage stage = (Stage) cancel.getScene().getWindow();
+
+    public void onActionDeleteEmployee(ActionEvent actionEvent) {
+        Employee employee = tableEmployee.getSelectionModel().getSelectedItem();
+        dao.deleteEmployee(employee);
+
+    }
+
+    public void clickCancelEmployeeTab(ActionEvent actionEvent) {
+        Stage stage = (Stage) cancelEmployee.getScene().getWindow();
+        stage.close();
+    }
+
+
+    public void clickCancelShopTab(ActionEvent actionEvent) {
+        Stage stage = (Stage) cancelShop.getScene().getWindow();
         stage.close();
     }
 
@@ -89,9 +105,11 @@ public class AdminController {
         loader.setController(addShopController);
         Parent root1 = loader.load();
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Add Shop");
         stage.setScene(new Scene(root1));
+        stage.setResizable(false);
         stage.show();
 
         stage.setOnHiding(event -> {
@@ -100,6 +118,9 @@ public class AdminController {
                 dao.dodajRadnju(radnja);
             }
         });
+    }
+
+    public void onActionDeleteShop(ActionEvent actionEvent) throws IOException {
     }
 
 }

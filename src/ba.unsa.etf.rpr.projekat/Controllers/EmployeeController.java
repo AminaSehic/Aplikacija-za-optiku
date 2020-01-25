@@ -46,11 +46,11 @@ public class EmployeeController {
 
     }
     public void sellGlasses(ActionEvent actionEvent) {
-        Glasses g = tabelaNaocala.getSelectionModel().getSelectedItem();
-        dao.prodajNaocale(g.getId());
-        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
-        listNaocala = FXCollections.observableArrayList(glasses);
-        tabelaNaocala.setItems(listNaocala);
+//        Glasses g = tabelaNaocala.getSelectionModel().getSelectedItem();
+//        dao.prodajNaocale(g.getId());
+//        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
+//        listNaocala = FXCollections.observableArrayList(glasses);
+//        tabelaNaocala.setItems(listNaocala);
     }
 
     public void clickCancel(ActionEvent actionEvent) {

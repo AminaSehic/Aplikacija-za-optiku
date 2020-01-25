@@ -5,7 +5,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 public class Main extends Application {
 
 
@@ -16,10 +19,11 @@ public class Main extends Application {
         loader.setController(ctrl);
         Parent root = loader.load();
         primaryStage.setTitle("Optika");
+        primaryStage.initStyle(StageStyle.DECORATED);
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

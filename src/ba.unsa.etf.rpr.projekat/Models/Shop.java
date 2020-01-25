@@ -14,6 +14,10 @@ public class Shop {
         this.shopName = shopName;
         this.address = address;
     }
+    public Shop(String shopName, String address) {
+        this.shopName = shopName;
+        this.address = address;
+    }
 
     public int getId() {
         return id;
