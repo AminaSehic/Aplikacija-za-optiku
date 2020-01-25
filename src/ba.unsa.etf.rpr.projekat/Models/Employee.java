@@ -1,5 +1,7 @@
 package ba.unsa.etf.rpr.projekat.Models;
 
+import ba.unsa.etf.rpr.projekat.Controllers.AddEmployeeController.Vrsta;
+import ba.unsa.etf.rpr.projekat.Exceptions.InvalidEmployeeTypeException;
 import ba.unsa.etf.rpr.projekat.OptikaDAO;
 
 
@@ -11,15 +13,13 @@ public class Employee {
     private String address;
     private String contactNumber;
     private String password_hash;
-    private int type;
+    private Vrsta type;
     private Shop shop;
-    private OptikaDAO dao = OptikaDAO.getInstance();
-
 
     public Employee(){
     }
 
-    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, int type, String password_hash, int shop){
+    public Employee(int id, String name, String lastName, String birthDate, String address, String contactNumber, Vrsta type, String password_hash, Shop shop){
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -28,7 +28,7 @@ public class Employee {
         this.contactNumber = contactNumber;
         this.type = type;
         this.password_hash = password_hash;
-        this.shop = dao.dajRadnju(shop);
+        this.shop = shop;
     }
 
 
@@ -37,9 +37,11 @@ public class Employee {
     }
 
     public String getTypeName() {
-        if (this.type == 1) {
+        if (this.type == Vrsta.ADMIN) {
+            return "Admin";
+        } else if(this.type == Vrsta.UPOSLENIK) {
             return "Employee";
-        } else {
+        } else{
             return "Owner";
         }
     }
@@ -109,18 +111,18 @@ public class Employee {
         this.contactNumber = contactNumber;
     }
 
-    public int getType() {
+    public Vrsta getType() {
         return type;
     }
 
-    public void setType(int tip) {
+    public void setType(Vrsta tip) {
         type = tip;
     }
 
     @Override
     public String toString() {
-        return "Employee" + "name='" + name + ", lastName='" + lastName + ", birthDate=" + birthDate +
-                ", address='" + address + ", contactNumber='" + contactNumber;
+        return "Employee: " + "name=" + name + ", lastName=" + lastName + ", birthDate=" + birthDate +
+                ", address=" + address + ", contactNumber=" + contactNumber;
     }
 
 }

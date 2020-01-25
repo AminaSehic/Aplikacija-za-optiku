@@ -9,13 +9,12 @@ public abstract class Article {
     private int price;
     private Shop shop;
     private int number;
-    private OptikaDAO dao = OptikaDAO.getInstance();
 
-    public Article(int id, String manufacturer, int price, int shop, int number){
+    public Article(int id, String manufacturer, int price, Shop shop, int number){
         this.id = id;
         this.manufacturer = manufacturer;
         this.price = price;
-        this.shop = dao.dajRadnju(shop);
+        this.shop = shop;
         this.number = number;
     }
 

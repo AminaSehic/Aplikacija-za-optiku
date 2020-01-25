@@ -7,10 +7,9 @@ public class Glasses extends Article {
 
     private String model;
     private int yearOfProduction;
-    private OptikaDAO dao = OptikaDAO.getInstance();
 
 
-    public Glasses(int id, String manufacturer, String model, int yearOfProduction, int type, int price, int shop, int number){
+    public Glasses(int id, String manufacturer, String model, int yearOfProduction, int type, int price, Shop shop, int number){
         super(id, manufacturer, price, shop, number);
         this.model = model;
         this.yearOfProduction = yearOfProduction;
