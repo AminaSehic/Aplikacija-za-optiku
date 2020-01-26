@@ -20,12 +20,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminController {
     private OptikaDAO dao;
     public TableView<Employee> tableEmployee;
+    public TableView<Shop> tableShop;
     public TableColumn colEmployeeId;
     public TableColumn colEmployeeName;
     public TableColumn colEmployeeLastName;
@@ -34,16 +36,22 @@ public class AdminController {
     public TableColumn colEmployeeContact;
     public TableColumn colEmployeeShopName;
     public TableColumn colEmployeeType;
+    public TableColumn colShopId;
+    public TableColumn colShopName;
+    public TableColumn colShopAddress;
     public Button addEmployee;
     public Button cancelEmployee, cancelShop;
     public Button addShop;
     public VBox vBox;
     private ObservableList<Employee> listEmployees;
+    private ObservableList<Shop> listShops;
 
     public AdminController(OptikaDAO dao) {
         this.dao = dao;
-        ArrayList<Employee> zaposlenici = dao.dajSveZaposlenike();
-        listEmployees = FXCollections.observableArrayList(zaposlenici);
+        ArrayList<Employee> employees = dao.dajSveZaposlenike();
+        listEmployees = FXCollections.observableArrayList(employees);
+        ArrayList<Shop> shops = dao.getAllShops();
+        listShops = FXCollections.observableArrayList(shops);
     }
 
     @FXML
@@ -57,6 +65,12 @@ public class AdminController {
         colEmployeeContact.setCellValueFactory(new PropertyValueFactory("contactNumber"));
         colEmployeeShopName.setCellValueFactory(new PropertyValueFactory("shopName"));
         colEmployeeType.setCellValueFactory(new PropertyValueFactory("typeName"));
+
+        tableShop.setItems(listShops);
+        colShopId.setCellValueFactory(new PropertyValueFactory("id"));
+        colShopName.setCellValueFactory(new PropertyValueFactory("shopName"));
+        colShopAddress.setCellValueFactory(new PropertyValueFactory("address"));
+
     }
 
     public void onActionAddEmployee(ActionEvent actionEvent) throws IOException {
@@ -85,7 +99,9 @@ public class AdminController {
     public void onActionDeleteEmployee(ActionEvent actionEvent) {
         Employee employee = tableEmployee.getSelectionModel().getSelectedItem();
         dao.deleteEmployee(employee);
-
+        ArrayList<Employee> employees = dao.dajSveZaposlenike();
+        listEmployees = FXCollections.observableArrayList(employees);
+        tableEmployee.setItems(listEmployees);
     }
 
     public void clickCancelEmployeeTab(ActionEvent actionEvent) {
@@ -116,6 +132,7 @@ public class AdminController {
             Shop radnja = addShopController.getShop();
             if (radnja != null) {
                 dao.dodajRadnju(radnja);
+                listShops.setAll(dao.getAllShops());
             }
         });
     }

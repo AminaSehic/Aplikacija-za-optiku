@@ -53,6 +53,6 @@ public class Shop {
 
     @Override
     public String toString() {
-        return "Shop " + "shopName='" + shopName + ", address='" + address;
+        return getId()+" "+getShopName();
     }
 }

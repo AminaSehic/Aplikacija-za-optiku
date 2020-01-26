@@ -6,8 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,6 +23,7 @@ public class MainController {
     private OptikaDAO dao;
     public TextField nameField;
     public PasswordField passwordField;
+    public Label labelGreska;
     public MainController(){
         dao = new OptikaDAO();
     }
@@ -51,6 +54,10 @@ public class MainController {
             stage.setScene(new Scene(root1, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             stage.show();
             stage.setResizable(false);
+        }
+        else{
+            labelGreska.setTextFill(Color.web("FF0000"));
+            labelGreska.setText("Invalid username or password!");
         }
     }
 }
