@@ -55,10 +55,9 @@ public class AddEmployeeController {
             String contact = validateContact(contactField.getText());
             String password = validatePassword(passwordField.getText());
             String password_hash = dajPasswordHash(password);
-            Employee.Type type = null;
-            type = typeField.getValue();
+            Employee.Type type = validateType(typeField.getValue());
             int shop = Integer.parseInt(shopIdField.getValue().toString().split(" ")[0]);
-            Shop s = dao.dajRadnju(shop);
+            Shop s = validateShop(dao.dajRadnju(shop));
             employee = new Employee(name, lastName, date, address, contact, password_hash, type, s);
             Stage stage = (Stage) nameField.getScene().getWindow();
             stage.close();
@@ -118,7 +117,6 @@ public class AddEmployeeController {
             throw new InvalidEmployeeDataException("Invalid phone number");
         }
         return number;
-
     }
 
     private String validatePassword(String password) throws InvalidEmployeeDataException {
@@ -126,7 +124,14 @@ public class AddEmployeeController {
             throw new InvalidEmployeeDataException("Password must be between 5 and 31 characters!");
         }
         return password;
-
+    }
+    private Employee.Type validateType(Employee.Type type) throws  InvalidEmployeeDataException{
+        if(type==null) throw new InvalidEmployeeDataException("Invalid employee type");
+        return type;
+    }
+    private Shop validateShop(Shop shop) throws InvalidEmployeeDataException{
+        if(shop==null) throw new InvalidEmployeeDataException("Invalid shop selected");
+        return shop;
     }
 
 
