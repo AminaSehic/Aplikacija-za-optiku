@@ -55,7 +55,7 @@
                 <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#clickCancel" prefHeight="31.0" text="Cancel" />
             </buttons>
         </ButtonBar>
-      <Label fx:id="labelGreska" text="Label" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+      <Label fx:id="labelGreska" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
 
 
     </children>

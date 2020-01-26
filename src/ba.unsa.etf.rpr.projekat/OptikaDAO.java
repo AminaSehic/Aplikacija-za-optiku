@@ -28,8 +28,38 @@ public class OptikaDAO {
 //        return instance;
 //    }
     public OptikaDAO() {
-        setDatabase();
+        getIndexes();
+    }
 
+    private void getIndexes() {
+
+        start("Select max(id) from employee");
+        try {
+            ResultSet rs = statement.executeQuery();
+            idEmployee = rs.getInt(1);
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
+        start("Select max(id) from shop");
+        try {
+            ResultSet rs = statement.executeQuery();
+            idShop = rs.getInt(1);
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
+        start("Select max(id) from glasses");
+        try {
+            ResultSet rs = statement.executeQuery();
+            idGlasses = rs.getInt(1);
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
     }
 
     public void prepareStatement(String s) {
@@ -49,6 +79,7 @@ public class OptikaDAO {
             testStatement.executeQuery();
         } catch (SQLException e) {
             regenerisiBazu();
+            setDatabase();
         }
         prepareStatement(s);
     }
@@ -277,8 +308,8 @@ public class OptikaDAO {
         }
     }
 
-    private void setDatabase(){
-        start("insert into shop values(?,?,?)");
+    private void setDatabase() {
+        start("insert or replace into shop values(?,?,?)");
         try {
             statement.setInt(1, 1);
             statement.setString(2, "Oko");
@@ -288,7 +319,7 @@ public class OptikaDAO {
             e.printStackTrace();
             close();
         }
-        start("insert into employee values(?,?,?,?,?,?,?,?,?)");
+        start("insert or replace into employee values(?,?,?,?,?,?,?,?,?)");
         try {
             statement.setInt(1, 1);
             statement.setString(2, "admin");
@@ -306,34 +337,6 @@ public class OptikaDAO {
             close();
         }
 
-
-        start("Select max(id) from employee");
-        try {
-            ResultSet rs = statement.executeQuery();
-            idEmployee = rs.getInt(1);
-            close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            close();
-        }
-        start("Select max(id) from shop");
-        try {
-            ResultSet rs = statement.executeQuery();
-            idShop = rs.getInt(1);
-            close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            close();
-        }
-        start("Select max(id) from glasses");
-        try {
-            ResultSet rs = statement.executeQuery();
-            idGlasses = rs.getInt(1);
-            close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            close();
-        }
     }
 
     private int getNewEmployeeId() {

@@ -33,6 +33,7 @@ public class MainController {
         String password = passwordField.getText();
         Employee e = dao.dajZaposlenika(name, password);
         if (e.getType() == Employee.Type.OWNER ||e.getType() == Employee.Type.ADMIN) {
+            labelGreska.setText("");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminView.fxml"));
             loader.setController(new AdminController(dao));
             Parent root1 = loader.load();
@@ -44,6 +45,7 @@ public class MainController {
             stage.show();
             stage.setResizable(false);
         } else if (e.getType() == Employee.Type.EMPLOYEE) {
+            labelGreska.setText("");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/employeeView.fxml"));
             loader.setController(new EmployeeController(dao, e));
             Parent root1 = loader.load();

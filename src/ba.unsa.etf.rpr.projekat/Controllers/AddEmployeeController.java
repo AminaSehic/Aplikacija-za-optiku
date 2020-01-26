@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +25,7 @@ public class AddEmployeeController {
     public TextField contactField, passwordField;
     public ComboBox<Shop> shopIdField;
     public ComboBox<Employee.Type> typeField;
-    public Label greskaField;
+    public Label labelGreska;
 
     public Button cancelButton, addEmployee;
 
@@ -64,8 +65,8 @@ public class AddEmployeeController {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidEmployeeDataException e) {
-            //ispisi gresku
-            greskaField.setText(e.toString());
+            labelGreska.setTextFill(Color.web("FF0000"));
+            labelGreska.setText(e.getMessage());
         }
 
     }
