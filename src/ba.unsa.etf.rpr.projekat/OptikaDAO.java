@@ -4,7 +4,9 @@ package ba.unsa.etf.rpr.projekat;
 import ba.unsa.etf.rpr.projekat.Exceptions.InvalidEmployeeDataException;
 import ba.unsa.etf.rpr.projekat.Models.Employee;
 import ba.unsa.etf.rpr.projekat.Models.Glasses;
+import ba.unsa.etf.rpr.projekat.Models.PrescriptionGlasses;
 import ba.unsa.etf.rpr.projekat.Models.Shop;
+import ba.unsa.etf.rpr.projekat.Models.Sunglasses;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,11 +24,6 @@ public class OptikaDAO {
     private Connection conn = null;
     private PreparedStatement statement;
 
-    //    public static OptikaDAO getInstance() {
-//
-//        if (instance == null) instance = new OptikaDAO();
-//        return instance;
-//    }
     public OptikaDAO() {
         getIndexes();
     }
@@ -183,11 +180,18 @@ public class OptikaDAO {
             statement.setInt(1, id_radnje);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Glasses g = new Glasses(rs.getInt("id"), rs.getString("manufacturer"),
-                        rs.getString("model"), rs.getInt("yearOfProduction"),
-                        rs.getInt("type"), rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
-                        rs.getInt("number"));
-                naocale.add(g);
+                if (rs.getString("type").toLowerCase().equals("sunglasses")) {
+                    Sunglasses g = new Sunglasses(rs.getInt("id"), rs.getString("manufacturer"),
+                            rs.getString("model"), rs.getInt("year_of_production"),
+                            rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
+                            rs.getInt("quantity"));
+                    naocale.add(g);
+                } else if (rs.getString("type").toLowerCase().equals("prescription")) {
+                    PrescriptionGlasses g = new PrescriptionGlasses(rs.getInt("id"), rs.getString("manufacturer"),
+                            rs.getString("model"), rs.getInt("year_of_production"), rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
+                            rs.getInt("quantity"));
+                    naocale.add(g);
+                }
             }
 
         } catch (SQLException e) {
@@ -219,11 +223,12 @@ public class OptikaDAO {
         close();
     }
 
-    public void prodajNaocale(int id) {
-        try {
-            start("update glasses set number=(number-1) where id=?");
+    public void prodajNaocale(int id){
+        start("UPDATE glasses set quantity = (quantity-1) where id=?");
+        try{
             statement.setInt(1, id);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
             close();
@@ -250,11 +255,12 @@ public class OptikaDAO {
             start("DELETE from Employee where id=?");
             statement.setInt(1, employee.getId());
             statement.execute();
-            close();
+
         } catch (SQLException e) {
             e.printStackTrace();
             close();
         }
+        close();
     }
 
     private static byte[] getSHA(String input) throws NoSuchAlgorithmException {
@@ -315,6 +321,7 @@ public class OptikaDAO {
             statement.setString(2, "Oko");
             statement.setString(3, "Trg Alije Izetbegovica bb");
             statement.execute();
+            close();
         } catch (SQLException e) {
             e.printStackTrace();
             close();
@@ -370,7 +377,6 @@ public class OptikaDAO {
                 Shop shop = new Shop(rs.getInt("id"), rs.getString("shop_name"), rs.getString("address"));
                 shops.add(shop);
             }
-            close();
         } catch (SQLException e) {
             e.printStackTrace();
             close();

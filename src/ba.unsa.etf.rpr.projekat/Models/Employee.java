@@ -9,11 +9,11 @@ public class Employee {
     private String address;
     private String contactNumber;
     private String password_hash;
+    private Type type;
+    private Shop shop;
 
     public enum Type {ADMIN, OWNER, EMPLOYEE}
 
-    private Type type;
-    private Shop shop;
 
     public Employee() {
     }

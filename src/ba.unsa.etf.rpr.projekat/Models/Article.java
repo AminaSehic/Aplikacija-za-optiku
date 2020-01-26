@@ -8,14 +8,14 @@ public abstract class Article {
     private String manufacturer;
     private int price;
     private Shop shop;
-    private int number;
+    private int quantity;
 
-    public Article(int id, String manufacturer, int price, Shop shop, int number){
+    public Article(int id, String manufacturer, int price, Shop shop, int quantity){
         this.id = id;
         this.manufacturer = manufacturer;
         this.price = price;
         this.shop = shop;
-        this.number = number;
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -46,11 +46,11 @@ public abstract class Article {
         this.shop = shop;
     }
 
-    public int getNumber() {
-        return number;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setQuantity(int number) {
+        this.quantity = quantity;
     }
 }
