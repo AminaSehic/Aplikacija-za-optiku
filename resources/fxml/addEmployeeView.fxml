@@ -51,8 +51,8 @@
         <ComboBox fx:id="shopIdField" GridPane.columnIndex="2" GridPane.rowIndex="8" />
         <ButtonBar prefHeight="35.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
             <buttons>
-                <Button fx:id="addEmployee" onAction="#addEmployeeAction" prefHeight="31.0" prefWidth="151.0" text="Add employee" />
-                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#clickCancel" prefHeight="31.0" text="Cancel" />
+                <Button fx:id="addEmployee" defaultButton="true" onAction="#addEmployeeAction" prefHeight="31.0" prefWidth="151.0" text="Add employee" />
+                <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#clickCancel" prefHeight="31.0" text="Cancel" />
             </buttons>
         </ButtonBar>
       <Label fx:id="labelGreska" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />

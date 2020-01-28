@@ -19,26 +19,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class OptikaDAO {
-    private static int idEmployee, idShop, idGlasses;
-    private static OptikaDAO instance;
+    private static int idEmployee=110, idShop=110, idGlasses=110;
     private Connection conn = null;
     private PreparedStatement statement;
 
     public OptikaDAO() {
+        setDatabase();
         getIndexes();
     }
 
     private void getIndexes() {
-
-        start("Select max(id) from employee");
-        try {
-            ResultSet rs = statement.executeQuery();
-            idEmployee = rs.getInt(1);
-            close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            close();
-        }
         start("Select max(id) from shop");
         try {
             ResultSet rs = statement.executeQuery();
@@ -48,6 +38,16 @@ public class OptikaDAO {
             e.printStackTrace();
             close();
         }
+        start("Select max(id) from employee");
+        try {
+            ResultSet rs = statement.executeQuery();
+            idEmployee = rs.getInt(1);
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
+
         start("Select max(id) from glasses");
         try {
             ResultSet rs = statement.executeQuery();
@@ -64,7 +64,6 @@ public class OptikaDAO {
             statement = conn.prepareStatement(s);
         } catch (SQLException e) {
             e.printStackTrace();
-            close();
         }
     }
 
@@ -76,13 +75,12 @@ public class OptikaDAO {
             testStatement.executeQuery();
         } catch (SQLException e) {
             regenerisiBazu();
-            setDatabase();
         }
         prepareStatement(s);
     }
 
 
-    public Employee dajZaposlenika(String name, String password) {
+    public Employee dajZaposlenika(String name, String password) throws NullPointerException {
         Employee employee = new Employee();
         try {
             start("select * from employee where name=? and password_hash=?");
@@ -168,6 +166,7 @@ public class OptikaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             close();
+            return s;
         }
         close();
         return s;
@@ -182,13 +181,13 @@ public class OptikaDAO {
             while (rs.next()) {
                 if (rs.getString("type").toLowerCase().equals("sunglasses")) {
                     Sunglasses g = new Sunglasses(rs.getInt("id"), rs.getString("manufacturer"),
-                            rs.getString("model"), rs.getInt("year_of_production"),
+                            rs.getString("model"), rs.getString("year_of_production"),
                             rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
                     naocale.add(g);
                 } else if (rs.getString("type").toLowerCase().equals("prescription")) {
                     PrescriptionGlasses g = new PrescriptionGlasses(rs.getInt("id"), rs.getString("manufacturer"),
-                            rs.getString("model"), rs.getInt("year_of_production"), rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
+                            rs.getString("model"), rs.getString("year_of_production"), rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
                     naocale.add(g);
                 }
@@ -197,6 +196,7 @@ public class OptikaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             close();
+            return naocale;
         }
         close();
         return naocale;
@@ -219,19 +219,23 @@ public class OptikaDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
             close();
+            return;
         }
         close();
     }
 
-    public void prodajNaocale(int id){
-        start("UPDATE glasses set quantity = (quantity-1) where id=?");
-        try{
-            statement.setInt(1, id);
-            statement.executeUpdate();
+    public void prodajNaocale(Glasses glasses) {
+        System.out.println(glasses);
+        start("update glasses set quantity=? where id=?");
+        try {
+            statement.setInt(1, glasses.getQuantity()-1);
+            statement.setInt(2, glasses.getId());
+            statement.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
             close();
+            return;
         }
         close();
     }
@@ -246,6 +250,7 @@ public class OptikaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             close();
+            return;
         }
         close();
     }
@@ -303,13 +308,15 @@ public class OptikaDAO {
                         stmt.execute(sqlUpit);
                         sqlUpit = "";
                     } catch (SQLException e) {
+                        conn.close();
                         e.printStackTrace();
-                        close();
                     }
                 }
             }
             ulaz.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -326,6 +333,7 @@ public class OptikaDAO {
             e.printStackTrace();
             close();
         }
+
         start("insert or replace into employee values(?,?,?,?,?,?,?,?,?)");
         try {
             statement.setInt(1, 1);
@@ -340,6 +348,22 @@ public class OptikaDAO {
             statement.executeUpdate();
             close();
         } catch (SQLException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            close();
+        }
+        start("insert or replace into glasses values(?,?,?,?,?,?,?,?)");
+        try {
+            statement.setInt(1, 1);
+            statement.setString(2, "rayban");
+            statement.setString(3, "aviator");
+            statement.setString(4, "2010");
+            statement.setInt(5, 256);
+            statement.setString(6, "Sunglasses");
+            statement.setInt(7, 1);
+            statement.setInt(8, 11);
+            statement.executeUpdate();
+            close();
+        } catch (SQLException e) {
             e.printStackTrace();
             close();
         }
@@ -360,7 +384,9 @@ public class OptikaDAO {
 
     public void close() {
         try {
-            conn.close();
+             if(conn!=null && !conn.isClosed()){
+                 conn.close();
+             }
         } catch (SQLException e) {
             e.printStackTrace();
             close();
@@ -380,8 +406,43 @@ public class OptikaDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             close();
+            return shops;
         }
         close();
         return shops;
+    }
+
+    public void deleteShop(Shop shop) {
+        start("DELETE from shop where id=?");
+        try {
+            statement.setInt(1, shop.id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+        }
+        close();
+    }
+
+    public void addGlasses(Glasses glasses) {
+        try {
+            start("INSERT INTO glasses values(?,?,?,?,?,?,?,?");
+            statement.setInt(1, getNewGlassesId());
+            statement.setString(2, glasses.getManufacturer());
+            statement.setString(3, glasses.getModel());
+            statement.setString(4, glasses.getYearOfProduction());
+            statement.setInt(5, glasses.getPrice());
+            statement.setString(6, glasses.getType());
+            statement.setInt(7, glasses.getShop().getId());
+            statement.setInt(8, glasses.getQuantity());
+            statement.executeUpdate();
+            close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            close();
+            return;
+        }
+        close();
+
     }
 }

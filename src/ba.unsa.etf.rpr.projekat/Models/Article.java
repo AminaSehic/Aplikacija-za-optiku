@@ -1,6 +1,5 @@
 package ba.unsa.etf.rpr.projekat.Models;
 
-import ba.unsa.etf.rpr.projekat.OptikaDAO;
 
 
 public abstract class Article {
@@ -9,6 +8,15 @@ public abstract class Article {
     private int price;
     private Shop shop;
     private int quantity;
+
+    public Article(String manufacturer, int price, Shop shop, int quantity) {
+        this.manufacturer = manufacturer;
+        this.price = price;
+        this.shop = shop;
+        this.quantity = quantity;
+    }
+
+
 
     public Article(int id, String manufacturer, int price, Shop shop, int quantity){
         this.id = id;
@@ -51,6 +59,6 @@ public abstract class Article {
     }
 
     public void setQuantity(int number) {
-        this.quantity = quantity;
+        this.quantity = number;
     }
 }

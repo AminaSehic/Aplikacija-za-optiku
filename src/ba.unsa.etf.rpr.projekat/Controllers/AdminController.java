@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminController {
@@ -39,10 +37,7 @@ public class AdminController {
     public TableColumn colShopId;
     public TableColumn colShopName;
     public TableColumn colShopAddress;
-    public Button addEmployee;
     public Button cancelEmployee, cancelShop;
-    public Button addShop;
-    public VBox vBox;
     private ObservableList<Employee> listEmployees;
     private ObservableList<Shop> listShops;
 
@@ -138,6 +133,11 @@ public class AdminController {
     }
 
     public void onActionDeleteShop(ActionEvent actionEvent) throws IOException {
+        Shop shop = tableShop.getSelectionModel().getSelectedItem();
+        dao.deleteShop(shop);
+        ArrayList<Shop> shops = dao.getAllShops();
+        listShops = FXCollections.observableArrayList(shops);
+        tableShop.setItems(listShops);
     }
 
 }
