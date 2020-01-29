@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS  "shop" (
 	"address"	TEXT,
 	PRIMARY KEY("id")
 );
-CREATE TABLE "glasses" (
+CREATE TABLE IF NOT EXISTS "glasses" (
 	"id"	INTEGER,
 	"manufacturer"	TEXT,
 	"model"	TEXT,
