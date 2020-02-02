@@ -89,7 +89,6 @@ public class EmployeeController {
             if (glasses != null) {
                 dao.addGlasses(glasses);
                 ArrayList<Glasses> g = dao.getGlassesFromShop(e.getShop());
-                System.out.println(g);
                 listNaocala.setAll(g);
             }
         });

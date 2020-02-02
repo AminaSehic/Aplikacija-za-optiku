@@ -15,6 +15,7 @@ public class Shop {
         this.address = address;
     }
     public Shop(String shopName, String address) {
+        this.id = -1;
         this.shopName = shopName;
         this.address = address;
     }

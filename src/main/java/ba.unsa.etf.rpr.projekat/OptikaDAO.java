@@ -24,10 +24,11 @@ public class OptikaDAO {
     private static int idEmployee = -1, idShop = -1, idGlasses = -1;
     private Connection conn;
     private PreparedStatement testQuery, addShopQuery, getEmoployeeQuery, getAllEmployeeQuery,
-            getShopQuery, getGlassesQuery, sellGlassesQuery, addEmoloyeeQuery,
+            getShopQuery, getGlassesFromShopQuery, sellGlassesQuery, addEmoloyeeQuery,
             getEmployeeIndexQuery, getShopIndexQuery,
             getGlassesIndexQuery, deleteEmployeeQuery, setFirstEmployeeQuery, setFirstShopQuery,
-            setFirstGlassesQuery, getAllShopsQuery, deleteShopQuery, addGlassesQuery, deleteGlassesQuery;
+            setFirstGlassesQuery, getAllShopsQuery, deleteShopQuery, addGlassesQuery, deleteGlassesQuery,
+            getGlassesQuery, getEmployeeByIdQuery;
 
     public static OptikaDAO getInstance() {
         if (instance == null) instance = new OptikaDAO();
@@ -54,7 +55,7 @@ public class OptikaDAO {
             getEmoployeeQuery = conn.prepareStatement("select * from employee where name=? and password_hash=?");
             getAllEmployeeQuery = conn.prepareStatement("select * from employee");
             getShopQuery = conn.prepareStatement("select * from shop where id=?");
-            getGlassesQuery = conn.prepareStatement("select * from glasses where shop_id=?");
+            getGlassesFromShopQuery = conn.prepareStatement("select * from glasses where shop_id=?");
             sellGlassesQuery = conn.prepareStatement("update glasses set quantity=(quantity-1) where id=?");
             addEmoloyeeQuery = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
             addShopQuery = conn.prepareStatement("insert into shop values(?,?,?)");
@@ -69,18 +70,50 @@ public class OptikaDAO {
             deleteShopQuery = conn.prepareStatement("Delete from shop where id=?");
             addGlassesQuery = conn.prepareStatement("INSERT INTO glasses values(?,?,?,?,?,?,?,?)");
             deleteGlassesQuery = conn.prepareStatement("DELETE from glasses where id=?");
+            getGlassesQuery = conn.prepareStatement("SELECT * from glasses where id=?");
+            getEmployeeByIdQuery = conn.prepareStatement("SELECT * from employee where id=?");
             setDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public Employee getEmployee(int id){
+        Employee employee = null;
+        try{
+            getEmployeeByIdQuery.setInt(1, id);
+            ResultSet rs = getEmoployeeQuery.executeQuery();
+            employee = new Employee();
+            if (rs.next()) {
+                employee.setId(rs.getInt("id"));
+                employee.setName(rs.getString("name"));
+                employee.setName(rs.getString("name"));
 
+                employee.setLastName(rs.getString("last_name"));
+                employee.setBirthDate(rs.getString("birth_date"));
+
+                employee.setAddress(rs.getString("address"));
+                employee.setContactNumber(rs.getString("phone_number"));
+
+                employee.setType(parseEmployeeType(rs.getString("type")));
+                employee.setPassword_hash(rs.getString("password_hash"));
+
+                employee.setShop(getShop(rs.getInt("shop_id")));
+            }
+
+
+        } catch (SQLException | InvalidEmployeeDataException e) {
+            e.printStackTrace();
+        }
+        return employee;
+    }
     public Employee getEmployee(String name, String password) throws NullPointerException {
-        Employee employee = new Employee();
+        Employee employee = null;
         try {
+
             getEmoployeeQuery.setString(1, name);
             getEmoployeeQuery.setString(2, getPasswordHash(password));
             ResultSet rs = getEmoployeeQuery.executeQuery();
+            employee = new Employee();
             if (rs.next()) {
                 employee.setId(rs.getInt("id"));
                 employee.setName(rs.getString("name"));
@@ -156,29 +189,48 @@ public class OptikaDAO {
         }
     }
 
-    public ArrayList<Glasses> getGlassesFromShop(Shop shop) {
-        ArrayList<Glasses> naocale = new ArrayList<>();
-        try {
-            getGlassesQuery.setInt(1, shop.getId());
+    public Glasses getGlasses(int id){
+        Glasses glasses = null;
+        try{
+            getGlassesQuery.setInt(1, id);
             ResultSet rs = getGlassesQuery.executeQuery();
+            if(rs.next());
+            {
+                if(rs.getString("type").equalsIgnoreCase("Sunglasses")){
+                    glasses = new Sunglasses(rs.getInt("id"), rs.getString("manufacturer"), rs.getString("model"), rs.getString("year_of_production"),  rs.getInt("price"), getShop(rs.getInt("shop_id")), rs.getInt("quantity"));
+                } else if(rs.getString("type").equalsIgnoreCase("Prescription")){
+                    glasses = new PrescriptionGlasses(rs.getInt("id"), rs.getString("manufacturer"), rs.getString("model"), rs.getString("year_of_production"),  rs.getInt("price"), getShop(rs.getInt("shop_id")), rs.getInt("quantity"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return glasses;
+    }
+
+    public ArrayList<Glasses> getGlassesFromShop(Shop shop) {
+        ArrayList<Glasses> glasses = new ArrayList<>();
+        try {
+            getGlassesFromShopQuery.setInt(1, shop.getId());
+            ResultSet rs = getGlassesFromShopQuery.executeQuery();
             while (rs.next()) {
                 if (rs.getString("type").toLowerCase().equals("sunglasses")) {
                     Sunglasses g = new Sunglasses(rs.getInt("id"), rs.getString("manufacturer"),
                             rs.getString("model"), rs.getString("year_of_production"),
                             rs.getInt("price"), getShop(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
-                    naocale.add(g);
+                    glasses.add(g);
                 } else if (rs.getString("type").toLowerCase().equals("prescription")) {
                     PrescriptionGlasses g = new PrescriptionGlasses(rs.getInt("id"), rs.getString("manufacturer"),
                             rs.getString("model"), rs.getString("year_of_production"), rs.getInt("price"), getShop(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
-                    naocale.add(g);
+                    glasses.add(g);
                 }
             }
-            return naocale;
+            return glasses;
         } catch (SQLException e) {
             e.printStackTrace();
-            return naocale;
+            return glasses;
         }
     }
 
@@ -204,14 +256,13 @@ public class OptikaDAO {
         try {
             sellGlassesQuery.setInt(1, glasses.getId());
             sellGlassesQuery.executeUpdate();
-            System.out.println("uspjesno prodane naocale");
         } catch (SQLException e) {
             System.out.println(e.getMessage() + " greska");
         }
     }
     public void addShop(Shop s) {
         try {
-            addShopQuery.setInt(1, getNewShopId());
+            addShopQuery.setInt(1, (s.getId()==-1)? getNewShopId() : s.getId());
             addShopQuery.setString(2, s.getShopName());
             addShopQuery.setString(3, s.getAddress());
             addShopQuery.executeUpdate();

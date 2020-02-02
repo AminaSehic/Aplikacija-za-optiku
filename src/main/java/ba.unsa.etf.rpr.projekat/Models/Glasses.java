@@ -37,7 +37,7 @@ public abstract class Glasses extends Article {
     public abstract String getType();
     @Override
     public String toString() {
-        return "Glasses" + "manufacturer=" + getManufacturer() +
+        return "Glasses: " + "manufacturer=" + getManufacturer() +
                 ", model=" + model + ", yearOfProduction=" + yearOfProduction + ", price=" + getPrice() +
                 ", shop=" + getShop() + ", number=" + getQuantity();
     }
