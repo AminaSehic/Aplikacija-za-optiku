@@ -2,7 +2,6 @@ package ba.unsa.etf.rpr.projekat.Controllers;
 
 import ba.unsa.etf.rpr.projekat.Models.Employee;
 import ba.unsa.etf.rpr.projekat.Models.Glasses;
-import ba.unsa.etf.rpr.projekat.Models.Shop;
 import ba.unsa.etf.rpr.projekat.OptikaDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,14 +15,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EmployeeController {
@@ -46,7 +44,7 @@ public class EmployeeController {
 
     @FXML
     public void initialize() {
-        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
+        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop());
         listNaocala = FXCollections.observableArrayList(glasses);
         tabelaNaocala.setItems(listNaocala);
         colId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -59,8 +57,12 @@ public class EmployeeController {
     public void clickSellGlasses(ActionEvent actionEvent) {
         try {
             Glasses g = tabelaNaocala.getSelectionModel().getSelectedItem();
-            dao.prodajNaocale(g);
-            ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop().getId());
+            if(g.getQuantity()==1){
+                dao.deleteGlasses(g);
+            }else {
+                dao.prodajNaocale(g);
+            }
+            ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop());
             listNaocala = FXCollections.observableArrayList(glasses);
             tabelaNaocala.setItems(listNaocala);
             labelGreska.setText("");
@@ -87,7 +89,9 @@ public class EmployeeController {
             Glasses glasses = addGlassesController.getGlasses();
             if (glasses != null) {
                 dao.addGlasses(glasses);
-                listNaocala.setAll(dao.dajNaocaleIzRadnje(e.getId()));
+                ArrayList<Glasses> g = dao.dajNaocaleIzRadnje(e.getShop());
+                System.out.println(g);
+                listNaocala.setAll(g);
             }
         });
     }

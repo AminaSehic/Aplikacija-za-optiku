@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -86,6 +85,7 @@ public class AdminController {
             if (e != null) {
                 dao.dodajZaposlenika(e);
                 listEmployees.setAll(dao.dajSveZaposlenike());
+                tableEmployee.setItems(listEmployees);
             }
         });
     }

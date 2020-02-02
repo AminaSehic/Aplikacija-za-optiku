@@ -11,6 +11,7 @@ import ba.unsa.etf.rpr.projekat.Models.Sunglasses;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ public class OptikaDAO {
             dajRadnjuUpit, dajNaocaleIzRadnjeUpit,
             prodajNaocaleUpit, dodajZaposlenikaUpit, getEmployeeIndexQuery, getShopIndexQuery,
             getGlassesIndexQuery, deleteEmployeeQuery, setFirstEmployeeQuery, setFirstShopQuery,
-            setFirstGlassesQuery, getAllShopsQuery, deleteShopQuery, addGlassesQuery;
+            setFirstGlassesQuery, getAllShopsQuery, deleteShopQuery, addGlassesQuery, deleteGlassesQuery;
 
     public static OptikaDAO getInstance() {
         if (instance == null) instance = new OptikaDAO();
@@ -41,7 +42,6 @@ public class OptikaDAO {
         }
         try {
             testQuery = conn.prepareStatement("select * from employee, shop, glasses");
-            setDatabase();
         } catch (Exception e) {
             regenerisiBazu();
             try {
@@ -68,6 +68,8 @@ public class OptikaDAO {
             getAllShopsQuery = conn.prepareStatement("Select * from shop");
             deleteShopQuery = conn.prepareStatement("Delete from shop where id=?");
             addGlassesQuery = conn.prepareStatement("INSERT INTO glasses values(?,?,?,?,?,?,?,?)");
+            deleteGlassesQuery = conn.prepareStatement("DELETE from glasses where id=?");
+            setDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,10 +155,10 @@ public class OptikaDAO {
         }
     }
 
-    public ArrayList<Glasses> dajNaocaleIzRadnje(int id_radnje) {
+    public ArrayList<Glasses> dajNaocaleIzRadnje(Shop shop) {
         ArrayList<Glasses> naocale = new ArrayList<>();
         try {
-            dajNaocaleIzRadnjeUpit.setInt(1, id_radnje);
+            dajNaocaleIzRadnjeUpit.setInt(1, shop.getId());
             ResultSet rs = dajNaocaleIzRadnjeUpit.executeQuery();
             while (rs.next()) {
                 if (rs.getString("type").toLowerCase().equals("sunglasses")) {
@@ -256,7 +258,8 @@ public class OptikaDAO {
     private void regenerisiBazu() {
         Scanner ulaz = null;
         try {
-            ulaz = new Scanner(new FileInputStream("resources/database/optika.db.sql"));
+            System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
+            ulaz = new Scanner(new FileInputStream("classes/database/optika.db.sql"));
             String sqlUpit = "";
             while (ulaz.hasNext()) {
                 sqlUpit += ulaz.nextLine();
@@ -315,14 +318,28 @@ public class OptikaDAO {
             e.printStackTrace();
         }
         try {
+            setFirstEmployeeQuery.setInt(1, 2);
+            setFirstEmployeeQuery.setString(2, "employee");
+            setFirstEmployeeQuery.setString(3, "employee");
+            setFirstEmployeeQuery.setString(4, "1/1/1987");
+            setFirstEmployeeQuery.setString(5, "Employee st.20");
+            setFirstEmployeeQuery.setString(6, "060123123");
+            setFirstEmployeeQuery.setString(7, dajPasswordHash("employee"));
+            setFirstEmployeeQuery.setString(8, "employee");
+            setFirstEmployeeQuery.setInt(9, 1);
+            setFirstEmployeeQuery.executeUpdate();
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        try {
             setFirstGlassesQuery.setInt(1, 1);
             setFirstGlassesQuery.setString(2, "rayban");
             setFirstGlassesQuery.setString(3, "aviator");
             setFirstGlassesQuery.setString(4, "2010");
             setFirstGlassesQuery.setInt(5, 256);
             setFirstGlassesQuery.setString(6, "Sunglasses");
-            setFirstGlassesQuery.setInt(7, 11);
-            setFirstGlassesQuery.setInt(8, 1);
+            setFirstGlassesQuery.setInt(7, 1);
+            setFirstGlassesQuery.setInt(8, 11);
             setFirstGlassesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -391,9 +408,18 @@ public class OptikaDAO {
             addGlassesQuery.setString(4, glasses.getYearOfProduction());
             addGlassesQuery.setInt(5, glasses.getPrice());
             addGlassesQuery.setString(6, glasses.getType());
-            addGlassesQuery.setInt(7, glasses.getQuantity());
-            addGlassesQuery.setInt(8, glasses.getShop().getId());
+            addGlassesQuery.setInt(7, glasses.getShop().getId());
+            addGlassesQuery.setInt(8, glasses.getQuantity());
             addGlassesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteGlasses(Glasses g) {
+        try{
+            deleteGlassesQuery.setInt(1, g.getId());
+            deleteGlassesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

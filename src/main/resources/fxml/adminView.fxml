@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <tabs>
+      <Tab text="Employees">
+         <content>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" />
+                    <ColumnConstraints hgrow="SOMETIMES" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints />
+                </rowConstraints>
+                <children>
+                    <TableView fx:id="tableEmployee" prefHeight="400.0">
+                        <columns>
+                            <TableColumn fx:id="colEmployeeId" prefWidth="43.99998474121094" text="ID" />
+                            <TableColumn fx:id="colEmployeeName" prefWidth="65.00001525878906" text="Name" />
+                            <TableColumn fx:id="colEmployeeLastName" prefWidth="94.0" text="Last name" />
+                            <TableColumn fx:id="colEmployeeBirthDate" prefWidth="98.0" text="Birth date" />
+                            <TableColumn fx:id="colEmployeeAddress" prefWidth="82.0" text="Address" />
+                            <TableColumn fx:id="colEmployeeContact" prefWidth="98.0" text="Contact" />
+                            <TableColumn fx:id="colEmployeeShopName" prefWidth="93.0" text="Shop name" />
+                            <TableColumn fx:id="colEmployeeType" prefWidth="67.0" text="Type" />
+                        </columns>
+                    </TableView>
+                    <VBox fx:id="employeeButtons" alignment="TOP_RIGHT" prefHeight="400.0" prefWidth="125.0" GridPane.columnIndex="1">
+                        <children>
+                            <Button fx:id="addEmployee" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionAddEmployee" text="Add employee">
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                            </Button>
+                            <Button fx:id="deleteEmployee" mnemonicParsing="false" onAction="#onActionDeleteEmployee" prefHeight="35.0" prefWidth="150.0" text="Delete employee">
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                            </Button>
+                            <Button fx:id="cancelEmployee" cancelButton="true" mnemonicParsing="false" onAction="#clickCancelEmployeeTab" prefHeight="35.0" prefWidth="150.0" text="Cancel">
+                                <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </padding>
+                            </Button>
+                        </children>
+                    </VBox>
+                </children>
+            </GridPane>
+         </content>
+      </Tab>
+      <Tab text="Shops">
+         <content>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints />
+               </rowConstraints>
+               <children>
+                  <TableView fx:id="tableShop" prefHeight="400.0" prefWidth="641.0">
+                     <columns>
+                        <TableColumn fx:id="colShopId" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="ID" />
+                        <TableColumn fx:id="colShopName" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Name" />
+                        <TableColumn fx:id="colShopAddress" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Address" />
+                     </columns>
+                  </TableView>
+                  <VBox fx:id="vBox" alignment="TOP_RIGHT" prefHeight="400.0" prefWidth="125.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="addShop" mnemonicParsing="false" onAction="#onActionAddShop" prefHeight="35.0" prefWidth="150.0" text="Add shop">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="deleteShop" mnemonicParsing="false" onAction="#onActionDeleteShop" prefHeight="35.0" prefWidth="150.0" text="Delete shop">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="cancelShop" mnemonicParsing="false" onAction="#clickCancelShopTab" prefHeight="35.0" prefWidth="150.0" text="Cancel">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>
