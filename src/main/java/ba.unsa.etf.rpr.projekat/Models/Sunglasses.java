@@ -17,6 +17,6 @@ public class Sunglasses extends Glasses {
 
     @Override
     public String toString() {
-        return "naocale"+getId()+" "+getManufacturer()+" "+getModel()+" "+getYearOfProduction()+" "+ getPrice()+" "+getType()+ " " +getShop().getId()+" " +getQuantity();
+        return "Glasses"+getId()+" "+getManufacturer()+" "+getModel()+" "+getYearOfProduction()+" "+ getPrice()+" "+getType()+ " " +getShop().getId()+" " +getQuantity();
     }
 }

@@ -23,9 +23,9 @@ public class OptikaDAO {
     private static OptikaDAO instance;
     private static int idEmployee = -1, idShop = -1, idGlasses = -1;
     private Connection conn;
-    private PreparedStatement testQuery, dodajRadnjuUpit, dajZaposlenikaUpit, dajSveZaposlenikeUpit,
-            dajRadnjuUpit, dajNaocaleIzRadnjeUpit,
-            prodajNaocaleUpit, dodajZaposlenikaUpit, getEmployeeIndexQuery, getShopIndexQuery,
+    private PreparedStatement testQuery, addShopQuery, getEmoployeeQuery, getAllEmployeeQuery,
+            getShopQuery, getGlassesQuery, sellGlassesQuery, addEmoloyeeQuery,
+            getEmployeeIndexQuery, getShopIndexQuery,
             getGlassesIndexQuery, deleteEmployeeQuery, setFirstEmployeeQuery, setFirstShopQuery,
             setFirstGlassesQuery, getAllShopsQuery, deleteShopQuery, addGlassesQuery, deleteGlassesQuery;
 
@@ -43,7 +43,7 @@ public class OptikaDAO {
         try {
             testQuery = conn.prepareStatement("select * from employee, shop, glasses");
         } catch (Exception e) {
-            regenerisiBazu();
+            resetDatabase();
             try {
                 testQuery = conn.prepareStatement("select * from employee, shop, glasses");
             } catch (SQLException e1) {
@@ -51,13 +51,13 @@ public class OptikaDAO {
             }
         }
         try {
-            dajZaposlenikaUpit = conn.prepareStatement("select * from employee where name=? and password_hash=?");
-            dajSveZaposlenikeUpit = conn.prepareStatement("select * from employee");
-            dajRadnjuUpit = conn.prepareStatement("select * from shop where id=?");
-            dajNaocaleIzRadnjeUpit = conn.prepareStatement("select * from glasses where shop_id=?");
-            prodajNaocaleUpit = conn.prepareStatement("update glasses set quantity=(quantity-1) where id=?");
-            dodajZaposlenikaUpit = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
-            dodajRadnjuUpit = conn.prepareStatement("insert into shop values(?,?,?)");
+            getEmoployeeQuery = conn.prepareStatement("select * from employee where name=? and password_hash=?");
+            getAllEmployeeQuery = conn.prepareStatement("select * from employee");
+            getShopQuery = conn.prepareStatement("select * from shop where id=?");
+            getGlassesQuery = conn.prepareStatement("select * from glasses where shop_id=?");
+            sellGlassesQuery = conn.prepareStatement("update glasses set quantity=(quantity-1) where id=?");
+            addEmoloyeeQuery = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?,?,?)");
+            addShopQuery = conn.prepareStatement("insert into shop values(?,?,?)");
             getEmployeeIndexQuery = conn.prepareStatement("select max(id) from employee");
             getShopIndexQuery = conn.prepareStatement("select max(id) from shop");
             getGlassesIndexQuery = conn.prepareStatement("select max(id) from glasses");
@@ -74,12 +74,13 @@ public class OptikaDAO {
             e.printStackTrace();
         }
     }
-    public Employee dajZaposlenika(String name, String password) throws NullPointerException {
+
+    public Employee getEmployee(String name, String password) throws NullPointerException {
         Employee employee = new Employee();
         try {
-            dajZaposlenikaUpit.setString(1, name);
-            dajZaposlenikaUpit.setString(2, dajPasswordHash(password));
-            ResultSet rs = dajZaposlenikaUpit.executeQuery();
+            getEmoployeeQuery.setString(1, name);
+            getEmoployeeQuery.setString(2, getPasswordHash(password));
+            ResultSet rs = getEmoployeeQuery.executeQuery();
             if (rs.next()) {
                 employee.setId(rs.getInt("id"));
                 employee.setName(rs.getString("name"));
@@ -94,7 +95,7 @@ public class OptikaDAO {
                 employee.setType(parseEmployeeType(rs.getString("type")));
                 employee.setPassword_hash(rs.getString("password_hash"));
 
-                employee.setShop(dajRadnju(rs.getInt("shop_id")));
+                employee.setShop(getShop(rs.getInt("shop_id")));
             }
 
         } catch (SQLException | NoSuchAlgorithmException | InvalidEmployeeDataException e) {
@@ -116,10 +117,10 @@ public class OptikaDAO {
 
     }
 
-    public ArrayList<Employee> dajSveZaposlenike() {
+    public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> zaposlenici = new ArrayList<>();
         try {
-            ResultSet rs = dajSveZaposlenikeUpit.executeQuery();
+            ResultSet rs = getAllEmployeeQuery.executeQuery();
             if (!rs.next()) {
                 return zaposlenici;
             }
@@ -132,7 +133,7 @@ public class OptikaDAO {
                         rs.getString("phone_number"),
                         parseEmployeeType(rs.getString("type")),
                         rs.getString("password_hash"),
-                        dajRadnju(rs.getInt("shop_id")));
+                        getShop(rs.getInt("shop_id")));
                 zaposlenici.add(e);
             } while (rs.next());
         } catch (SQLException | InvalidEmployeeDataException e) {
@@ -141,11 +142,11 @@ public class OptikaDAO {
         return zaposlenici;
     }
 
-    public Shop dajRadnju(int id) {
+    public Shop getShop(int id) {
         Shop s = null;
         try {
-            dajRadnjuUpit.setInt(1, id);
-            ResultSet rs = dajRadnjuUpit.executeQuery();
+            getShopQuery.setInt(1, id);
+            ResultSet rs = getShopQuery.executeQuery();
             if (!rs.next()) return null;
             s = new Shop(rs.getInt("id"), rs.getString("shop_name"), rs.getString("address"));
             return s;
@@ -155,21 +156,21 @@ public class OptikaDAO {
         }
     }
 
-    public ArrayList<Glasses> dajNaocaleIzRadnje(Shop shop) {
+    public ArrayList<Glasses> getGlassesFromShop(Shop shop) {
         ArrayList<Glasses> naocale = new ArrayList<>();
         try {
-            dajNaocaleIzRadnjeUpit.setInt(1, shop.getId());
-            ResultSet rs = dajNaocaleIzRadnjeUpit.executeQuery();
+            getGlassesQuery.setInt(1, shop.getId());
+            ResultSet rs = getGlassesQuery.executeQuery();
             while (rs.next()) {
                 if (rs.getString("type").toLowerCase().equals("sunglasses")) {
                     Sunglasses g = new Sunglasses(rs.getInt("id"), rs.getString("manufacturer"),
                             rs.getString("model"), rs.getString("year_of_production"),
-                            rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
+                            rs.getInt("price"), getShop(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
                     naocale.add(g);
                 } else if (rs.getString("type").toLowerCase().equals("prescription")) {
                     PrescriptionGlasses g = new PrescriptionGlasses(rs.getInt("id"), rs.getString("manufacturer"),
-                            rs.getString("model"), rs.getString("year_of_production"), rs.getInt("price"), dajRadnju(rs.getInt("shop_id")),
+                            rs.getString("model"), rs.getString("year_of_production"), rs.getInt("price"), getShop(rs.getInt("shop_id")),
                             rs.getInt("quantity"));
                     naocale.add(g);
                 }
@@ -181,39 +182,39 @@ public class OptikaDAO {
         }
     }
 
-    public void dodajZaposlenika(Employee e) {
+    public void addEmployee(Employee e) {
         try {
             //int id, String name, String lastName, String birthDate, String address, String contactNumber, int type, String password, int shop
-            dodajZaposlenikaUpit.setInt(1, getNewEmployeeId());
-            dodajZaposlenikaUpit.setString(2, e.getName());
-            dodajZaposlenikaUpit.setString(3, e.getLastName());
-            dodajZaposlenikaUpit.setString(4, e.getBirthDate());
-            dodajZaposlenikaUpit.setString(5, e.getAddress());
-            dodajZaposlenikaUpit.setString(6, e.getContactNumber());
-            dodajZaposlenikaUpit.setString(7, e.getPassword_hash());
-            dodajZaposlenikaUpit.setString(8, e.getType().toString());
-            dodajZaposlenikaUpit.setInt(9, e.getShop().getId());
-            dodajZaposlenikaUpit.executeUpdate();
+            addEmoloyeeQuery.setInt(1, getNewEmployeeId());
+            addEmoloyeeQuery.setString(2, e.getName());
+            addEmoloyeeQuery.setString(3, e.getLastName());
+            addEmoloyeeQuery.setString(4, e.getBirthDate());
+            addEmoloyeeQuery.setString(5, e.getAddress());
+            addEmoloyeeQuery.setString(6, e.getContactNumber());
+            addEmoloyeeQuery.setString(7, e.getPassword_hash());
+            addEmoloyeeQuery.setString(8, e.getType().toString());
+            addEmoloyeeQuery.setInt(9, e.getShop().getId());
+            addEmoloyeeQuery.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void prodajNaocale(Glasses glasses) {
+    public void sellGlasses(Glasses glasses) {
         try {
-            prodajNaocaleUpit.setInt(1, glasses.getId());
-            prodajNaocaleUpit.executeUpdate();
+            sellGlassesQuery.setInt(1, glasses.getId());
+            sellGlassesQuery.executeUpdate();
             System.out.println("uspjesno prodane naocale");
         } catch (SQLException e) {
             System.out.println(e.getMessage() + " greska");
         }
     }
-    public void dodajRadnju(Shop s) {
+    public void addShop(Shop s) {
         try {
-            dodajRadnjuUpit.setInt(1, getNewShopId());
-            dodajRadnjuUpit.setString(2, s.getShopName());
-            dodajRadnjuUpit.setString(3, s.getAddress());
-            dodajRadnjuUpit.executeUpdate();
+            addShopQuery.setInt(1, getNewShopId());
+            addShopQuery.setString(2, s.getShopName());
+            addShopQuery.setString(3, s.getAddress());
+            addShopQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -238,7 +239,7 @@ public class OptikaDAO {
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String dajPasswordHash(String password) throws NoSuchAlgorithmException {
+    public static String getPasswordHash(String password) throws NoSuchAlgorithmException {
         byte[] hash = getSHA(password);
         // Convert byte array into signum representation
         BigInteger number = new BigInteger(1, hash);
@@ -255,7 +256,7 @@ public class OptikaDAO {
     }
 
 
-    private void regenerisiBazu() {
+    private void resetDatabase() {
         Scanner ulaz = null;
         try {
             System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
@@ -310,7 +311,7 @@ public class OptikaDAO {
             setFirstEmployeeQuery.setString(4, "1/1/1970");
             setFirstEmployeeQuery.setString(5, "Zmaja od Bosne bb");
             setFirstEmployeeQuery.setString(6, "911");
-            setFirstEmployeeQuery.setString(7, dajPasswordHash("admin"));
+            setFirstEmployeeQuery.setString(7, getPasswordHash("admin"));
             setFirstEmployeeQuery.setString(8, "admin");
             setFirstEmployeeQuery.setInt(9, 1);
             setFirstEmployeeQuery.executeUpdate();
@@ -324,7 +325,7 @@ public class OptikaDAO {
             setFirstEmployeeQuery.setString(4, "1/1/1987");
             setFirstEmployeeQuery.setString(5, "Employee st.20");
             setFirstEmployeeQuery.setString(6, "060123123");
-            setFirstEmployeeQuery.setString(7, dajPasswordHash("employee"));
+            setFirstEmployeeQuery.setString(7, getPasswordHash("employee"));
             setFirstEmployeeQuery.setString(8, "employee");
             setFirstEmployeeQuery.setInt(9, 1);
             setFirstEmployeeQuery.executeUpdate();

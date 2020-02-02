@@ -42,7 +42,7 @@ public class AdminController {
 
     public AdminController(OptikaDAO dao) {
         this.dao = dao;
-        ArrayList<Employee> employees = dao.dajSveZaposlenike();
+        ArrayList<Employee> employees = dao.getAllEmployees();
         listEmployees = FXCollections.observableArrayList(employees);
         ArrayList<Shop> shops = dao.getAllShops();
         listShops = FXCollections.observableArrayList(shops);
@@ -83,8 +83,8 @@ public class AdminController {
         stage.setOnHiding(event -> {
             Employee e = addEmployeeController.getEmployee();
             if (e != null) {
-                dao.dodajZaposlenika(e);
-                listEmployees.setAll(dao.dajSveZaposlenike());
+                dao.addEmployee(e);
+                listEmployees.setAll(dao.getAllEmployees());
                 tableEmployee.setItems(listEmployees);
             }
         });
@@ -94,7 +94,7 @@ public class AdminController {
     public void onActionDeleteEmployee(ActionEvent actionEvent) {
         Employee employee = tableEmployee.getSelectionModel().getSelectedItem();
         dao.deleteEmployee(employee);
-        ArrayList<Employee> employees = dao.dajSveZaposlenike();
+        ArrayList<Employee> employees = dao.getAllEmployees();
         listEmployees = FXCollections.observableArrayList(employees);
         tableEmployee.setItems(listEmployees);
     }
@@ -126,7 +126,7 @@ public class AdminController {
         stage.setOnHiding(event -> {
             Shop radnja = addShopController.getShop();
             if (radnja != null) {
-                dao.dodajRadnju(radnja);
+                dao.addShop(radnja);
                 listShops.setAll(dao.getAllShops());
             }
         });

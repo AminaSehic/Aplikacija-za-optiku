@@ -36,7 +36,6 @@ public class AddShopController {
     }
 
     public void addShopAction(ActionEvent actionEvent) {
-
         String name = null;
         try {
             name = validateName(fieldShopName.getText());
@@ -45,6 +44,7 @@ public class AddShopController {
             Stage stage = (Stage) fieldShopName.getScene().getWindow();
             stage.close();
         } catch (InvalidShopDataException e) {
+
             labelGreska.setTextFill(Color.web("FF0000"));
             labelGreska.setText(e.getMessage());
         }

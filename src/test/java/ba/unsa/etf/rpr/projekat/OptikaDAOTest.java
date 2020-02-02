@@ -2,52 +2,45 @@ package ba.unsa.etf.rpr.projekat;
 
 import ba.unsa.etf.rpr.projekat.Models.Employee;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 class OptikaDAOTest {
-    private OptikaDAO dao;
-    @BeforeEach
-    void setUp() {
+
+    private static OptikaDAO dao;
+    @BeforeAll
+    static void setup(){
         dao = OptikaDAO.getInstance();
     }
-//String name, String lastName, String birthDate, String address, String contactNumber, String password_hash, Type type, Shop shop
+
     @Test
-    void dodajZaposlenika() {
-        Employee e = new Employee(100, "Haso", "Hasic", "02/02/1970", "Pofalicka 16", "060123456", Employee.Type.OWNER,"882c77869c5291190178e6a7caa7e0d166fbf327d1f60ac070eed0ca2835dc37",  dao.dajRadnju(1) );
-        dao.dodajZaposlenika(e);
-        Employee zaposlenik;
-        zaposlenik = dao.dajZaposlenika("Haso", "haso");
-        assertNotNull(zaposlenik);
+    void getEmployee() {
     }
 
     @Test
-    void dajZaposlenika() {
+    void getAllEmployees() {
+
     }
 
     @Test
-    void dajSveZaposlenike() {
+    void getShop() {
     }
 
     @Test
-    void dajRadnju() {
+    void getGlassesFromShop() {
     }
 
     @Test
-    void dajNaocaleIzRadnje() {
-    }
-
-
-    @Test
-    void prodajNaocale() {
+    void addEmployee() {
     }
 
     @Test
-    void dodajRadnju() {
+    void sellGlasses() {
+    }
+
+    @Test
+    void addShop() {
     }
 
     @Test
@@ -55,7 +48,7 @@ class OptikaDAOTest {
     }
 
     @Test
-    void dajPasswordHash() {
+    void getPasswordHash() {
     }
 
     @Test

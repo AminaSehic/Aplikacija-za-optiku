@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EmployeeController {
@@ -44,7 +43,7 @@ public class EmployeeController {
 
     @FXML
     public void initialize() {
-        ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop());
+        ArrayList<Glasses> glasses = dao.getGlassesFromShop(e.getShop());
         listNaocala = FXCollections.observableArrayList(glasses);
         tabelaNaocala.setItems(listNaocala);
         colId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -60,9 +59,9 @@ public class EmployeeController {
             if(g.getQuantity()==1){
                 dao.deleteGlasses(g);
             }else {
-                dao.prodajNaocale(g);
+                dao.sellGlasses(g);
             }
-            ArrayList<Glasses> glasses = dao.dajNaocaleIzRadnje(e.getShop());
+            ArrayList<Glasses> glasses = dao.getGlassesFromShop(e.getShop());
             listNaocala = FXCollections.observableArrayList(glasses);
             tabelaNaocala.setItems(listNaocala);
             labelGreska.setText("");
@@ -89,7 +88,7 @@ public class EmployeeController {
             Glasses glasses = addGlassesController.getGlasses();
             if (glasses != null) {
                 dao.addGlasses(glasses);
-                ArrayList<Glasses> g = dao.dajNaocaleIzRadnje(e.getShop());
+                ArrayList<Glasses> g = dao.getGlassesFromShop(e.getShop());
                 System.out.println(g);
                 listNaocala.setAll(g);
             }

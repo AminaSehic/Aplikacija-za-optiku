@@ -29,10 +29,16 @@ public class MainController {
     }
 
     public void clickOnButtonOK(ActionEvent actionEvent) throws IOException {
+        nameField.getStyleClass().removeAll("fieldIncorrect");
+        passwordField.getStyleClass().removeAll("fieldIncorrect");
         String name = nameField.getText();
         String password = passwordField.getText();
         try{
-            Employee e = dao.dajZaposlenika(name, password);
+            Employee e = dao.getEmployee(name, password);
+            nameField.getStyleClass().removeAll("fieldIncorrect");
+            passwordField.getStyleClass().removeAll("fieldIncorrect");
+            nameField.getStyleClass().add("fieldCorrect");
+            passwordField.getStyleClass().add("fieldCorrect");
             if (e.getType() == Employee.Type.OWNER ||e.getType() == Employee.Type.ADMIN) {
                 labelGreska.setText("");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/adminView.fxml"));
@@ -59,6 +65,10 @@ public class MainController {
                 stage.setResizable(false);
             }
             else{
+                nameField.getStyleClass().removeAll("fieldCorrect");
+                passwordField.getStyleClass().removeAll("fieldCorrect");
+                nameField.getStyleClass().add("fieldIncorrect");
+                passwordField.getStyleClass().add("fieldIncorrect");
                 labelGreska.setTextFill(Color.web("FF0000"));
                 labelGreska.setText("Invalid username or password!");
             }

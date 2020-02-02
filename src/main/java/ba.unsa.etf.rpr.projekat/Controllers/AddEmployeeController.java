@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static ba.unsa.etf.rpr.projekat.OptikaDAO.dajPasswordHash;
+import static ba.unsa.etf.rpr.projekat.OptikaDAO.getPasswordHash;
 
 public class AddEmployeeController {
     private OptikaDAO dao;
@@ -54,11 +54,11 @@ public class AddEmployeeController {
             String address = validateAddress(addressField.getText());
             String contact = validateContact(contactField.getText());
             String password = validatePassword(passwordField.getText());
-            String password_hash = dajPasswordHash(password);
+            String password_hash = getPasswordHash(password);
             Employee.Type type = validateType(typeField.getValue());
             String sh = validateShop(shopIdField.getValue());
             int shop = Integer.parseInt(shopIdField.getValue().toString().split(" ")[0]);
-            Shop s = dao.dajRadnju(shop);
+            Shop s = dao.getShop(shop);
             employee = new Employee(name, lastName, date, address, contact, password_hash, type, s);
             Stage stage = (Stage) nameField.getScene().getWindow();
             stage.close();

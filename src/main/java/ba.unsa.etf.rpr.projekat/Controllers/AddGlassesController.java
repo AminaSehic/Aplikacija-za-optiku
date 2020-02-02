@@ -50,7 +50,7 @@ public class AddGlassesController {
             String type = validateType(typeField.getValue());
             String sh = validateShop(shopIdField.getValue());
             int shop = Integer.parseInt(shopIdField.getValue().toString().split(" ")[0]);
-            Shop s = dao.dajRadnju(shop);
+            Shop s = dao.getShop(shop);
             if (type.toLowerCase().equals("sunglasses")) {
                 glasses = new Sunglasses(manufacturer, price, s, quantity, model, yearOfProduction);
             } else if(type.toLowerCase().equals("prescription")){
